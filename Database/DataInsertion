@@ -1,0 +1,39 @@
+INSERT INTO UserDetails (name, address, phone_number, email, is_student, created_at)
+VALUES 
+('Alice Johnson', '123 University St, Cityville', '1234567890', 'alice.johnson@university.edu', 1, GETDATE()),
+('Bob Smith', '456 College Ave, Townsville', '0987654321', 'bob.smith@gmail.com', 0, GETDATE()),
+('Charlie Brown', '789 Campus Rd, Cityville', '1122334455', 'charlie.brown@university.edu', 1, GETDATE());
+
+INSERT INTO Categories (category_name)
+VALUES 
+('Furniture'),
+('Automobiles'),
+('Electronics'),
+('Services'),
+('Books');
+INSERT INTO Services (service_name, description, price)
+VALUES 
+('Pick and Drop', 'Pick up and drop off service for students and residents.', 15.00),
+('Moving Service', 'Help with moving furniture and other heavy items.', 30.00),
+('Packing Service', 'Packing assistance for moving or storing items.', 20.00);
+INSERT INTO Ads (user_id, title, description, price, image, category_id, phone_number, created_at)
+VALUES 
+(1, 'Used Sofa', 'A comfortable 3-seater sofa in good condition.', 100.00, NULL, 1, '1234567890', GETDATE()),
+(2, 'Toyota Corolla 2010', 'Well-maintained Toyota Corolla, perfect for students.', 5000.00, NULL, 2, '0987654321', GETDATE()),
+(3, 'Laptop for Sale', '14-inch laptop, 8GB RAM, 256GB SSD.', 300.00, NULL, 3, '1122334455', GETDATE());
+INSERT INTO Comments (ad_id, user_id, comment, created_at)
+VALUES 
+(1, 2, 'Is this still available?', GETDATE()),
+(2, 3, 'Can I come and have a look this weekend?', GETDATE()),
+(3, 1, 'Is there any warranty left on this laptop?', GETDATE());
+INSERT INTO Favorites (user_id, ad_id, created_at)
+VALUES 
+(1, 2, GETDATE()),
+(2, 1, GETDATE()),
+(3, 3, GETDATE());
+INSERT INTO Transactions (buyer_id, ad_id, transaction_date, status)
+VALUES 
+(1, 2, GETDATE(), 'Completed'),
+(3, 1, GETDATE(), 'Pending'),
+(2, 3, GETDATE(), 'Completed');
+ 
