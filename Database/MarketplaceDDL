@@ -1,0 +1,74 @@
+-- Student Marketplace
+
+-- Create the new database if it does not exist already
+
+CREATE DATABASE Marketplace
+GO
+Use Marketplace
+CREATE TABLE UserDetails (
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    phone_number VARCHAR(15),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    is_student BIT,
+    created_at DATETIME DEFAULT GETDATE()
+);
+
+
+CREATE TABLE Categories (
+    category_id INT IDENTITY(1,1) PRIMARY KEY,
+    category_name VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE Services (
+    service_id INT IDENTITY(1,1) PRIMARY KEY,
+    service_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2)
+);
+
+CREATE TABLE Ads (
+    ad_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2),
+    image VARBINARY(MAX),
+    category_id INT,
+    phone_number VARCHAR(15),
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id),
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);
+
+CREATE TABLE Comments (
+    comment_id INT IDENTITY(1,1) PRIMARY KEY,
+    ad_id INT,
+    user_id INT,
+    comment TEXT,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (ad_id) REFERENCES Ads(ad_id),
+    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id)
+);
+
+CREATE TABLE Favorites (
+    favorite_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT,
+    ad_id INT,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id),
+    FOREIGN KEY (ad_id) REFERENCES Ads(ad_id)
+);
+
+CREATE TABLE Transactions (
+    transaction_id INT IDENTITY(1,1) PRIMARY KEY,
+    buyer_id INT,
+    ad_id INT,
+    transaction_date DATETIME DEFAULT GETDATE(),
+    status VARCHAR(50),
+    FOREIGN KEY (buyer_id) REFERENCES UserDetails(user_id),
+    FOREIGN KEY (ad_id) REFERENCES Ads(ad_id)
+);
+
+
