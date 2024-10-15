@@ -37,3 +37,37 @@ VALUES
 (3, 1, GETDATE(), 'Pending'),
 (2, 3, GETDATE(), 'Completed');
  
+-- Insert statements for Vehicles
+INSERT INTO Vehicles (category_id, make, model, year, price, mileage, description)
+VALUES
+(1, 'Toyota', 'Corolla', 2019, 15000, 20000, 'A reliable and fuel-efficient sedan.'),
+(1, 'Honda', 'Civic', 2018, 14000, 25000, 'Sporty and compact with great mileage.'),
+(1, 'Ford', 'Mustang', 2020, 30000, 10000, 'A classic American muscle car with modern features.');
+
+-- Insert statements for Accommodation
+INSERT INTO Accommodation (category_id, type, location, price, bedrooms, bathrooms, description)
+VALUES
+(2, 'Apartment', 'Sydney CBD', 500000, 2, 2, 'Modern apartment with stunning city views.'),
+(2, 'House', 'Melbourne Suburbs', 750000, 4, 3, 'Spacious family home in a quiet neighborhood.'),
+(2, 'Studio', 'Brisbane', 300000, 1, 1, 'Compact studio apartment perfect for singles.');
+
+-- Insert statements for Services
+INSERT INTO Services (category_id, service_name, provider, price, description)
+VALUES
+(3, 'Plumbing', 'QuickFix', 100, 'Professional plumbing services for residential properties.'),
+(3, 'Electrical', 'BrightSpark', 150, 'Experienced electricians for all your needs.'),
+(3, 'Cleaning', 'Sparkle & Shine', 80, 'Top-to-bottom cleaning services to make your home shine.');
+
+-- Insert statements for Electronics
+INSERT INTO Electronics (category_id, brand, model, price, description)
+VALUES
+(4, 'Apple', 'iPhone 14', 999, 'Latest model with advanced features and sleek design.'),
+(4, 'Samsung', 'Galaxy S21', 850, 'High-performance smartphone with cutting-edge technology.'),
+(4, 'Sony', 'PlayStation 5', 500, 'Next-gen gaming console for immersive experiences.');
+
+-- Insert statements for Furniture
+INSERT INTO Furniture (category_id, type, material, price, description)
+VALUES
+(5, 'Sofa', 'Leather', 800, 'Comfortable leather sofa with modern design.'),
+(5, 'Dining Table', 'Wood', 600, 'Elegant wooden dining table with seating for six.'),
+(5, 'Bed', 'Metal', 500, 'Sturdy metal bed frame with a contemporary look.');
