@@ -1,8 +1,8 @@
-INSERT INTO UserDetails (name, address, phone_number, email, is_student, created_at)
+INSERT INTO UserDetails (name, address, phone_number, email, is_student, password, created_at)
 VALUES 
-('Alice Johnson', '123 University St, Cityville', '1234567890', 'alice.johnson@university.edu', 1, GETDATE()),
-('Bob Smith', '456 College Ave, Townsville', '0987654321', 'bob.smith@gmail.com', 0, GETDATE()),
-('Charlie Brown', '789 Campus Rd, Cityville', '1122334455', 'charlie.brown@university.edu', 1, GETDATE());
+('Alice Johnson', '123 University St, Cityville', '1234567890', 'alice.johnson@university.edu', 1, 'password123', NOW()),
+('Bob Smith', '456 College Ave, Townsville', '0987654321', 'bob.smith@gmail.com', 0, 'password123', NOW()),
+('Charlie Brown', '789 Campus Rd, Cityville', '1122334455', 'charlie.brown@university.edu', 1, 'password123', NOW());
 
 INSERT INTO Categories (category_name)
 VALUES 
@@ -16,24 +16,58 @@ VALUES
 ('Pick and Drop', 'Pick up and drop off service for students and residents.', 15.00),
 ('Moving Service', 'Help with moving furniture and other heavy items.', 30.00),
 ('Packing Service', 'Packing assistance for moving or storing items.', 20.00);
-INSERT INTO Ads (user_id, title, description, price, image, category_id, phone_number, created_at)
+INSERT INTO Ads (user_id, title, description, price, image, category_id, phone_number, location_lat, location_lon, created_at)
 VALUES 
-(1, 'Used Sofa', 'A comfortable 3-seater sofa in good condition.', 100.00, NULL, 1, '1234567890', GETDATE()),
-(2, 'Toyota Corolla 2010', 'Well-maintained Toyota Corolla, perfect for students.', 5000.00, NULL, 2, '0987654321', GETDATE()),
-(3, 'Laptop for Sale', '14-inch laptop, 8GB RAM, 256GB SSD.', 300.00, NULL, 3, '1122334455', GETDATE());
+(1, 'Used Sofa', 'A comfortable 3-seater sofa in good condition.', 100.00, NULL, 1, '1234567890', 40.712776, -70.005974, NOW()),
+(2, 'Toyota Corolla 2010', 'Well-maintained Toyota Corolla, perfect for students.', 5000.00, NULL, 2, '0987654321', 35.712776, -74.005974, NOW()),
+(3, 'Laptop for Sale', '14-inch laptop, 8GB RAM, 256GB SSD.', 300.00, NULL, 3, '1122334455', 30.712776, -69.005974, NOW());
 INSERT INTO Comments (ad_id, user_id, comment, created_at)
 VALUES 
-(1, 2, 'Is this still available?', GETDATE()),
-(2, 3, 'Can I come and have a look this weekend?', GETDATE()),
-(3, 1, 'Is there any warranty left on this laptop?', GETDATE());
+(1, 2, 'Is this still available?', NOW()),
+(2, 3, 'Can I come and have a look this weekend?', NOW()),
+(3, 1, 'Is there any warranty left on this laptop?', NOW());
 INSERT INTO Favorites (user_id, ad_id, created_at)
 VALUES 
-(1, 2, GETDATE()),
-(2, 1, GETDATE()),
-(3, 3, GETDATE());
+(1, 2, NOW()),
+(2, 1, NOW()),
+(3, 3, NOW());
 INSERT INTO Transactions (buyer_id, ad_id, transaction_date, status)
 VALUES 
-(1, 2, GETDATE(), 'Completed'),
-(3, 1, GETDATE(), 'Pending'),
-(2, 3, GETDATE(), 'Completed');
+(1, 2, NOW(), 'Completed'),
+(3, 1, NOW(), 'Pending'),
+(2, 3, NOW(), 'Completed');
  
+-- Insert statements for Vehicles
+INSERT INTO Vehicles (category_id, make, model, year, price, mileage, description)
+VALUES
+(1, 'Toyota', 'Corolla', 2019, 15000, 20000, 'A reliable and fuel-efficient sedan.'),
+(1, 'Honda', 'Civic', 2018, 14000, 25000, 'Sporty and compact with great mileage.'),
+(1, 'Ford', 'Mustang', 2020, 30000, 10000, 'A classic American muscle car with modern features.');
+
+-- Insert statements for Accommodation
+INSERT INTO Accommodation (category_id, type, location, price, bedrooms, bathrooms, description)
+VALUES
+(2, 'Apartment', 'Sydney CBD', 500000, 2, 2, 'Modern apartment with stunning city views.'),
+(2, 'House', 'Melbourne Suburbs', 750000, 4, 3, 'Spacious family home in a quiet neighborhood.'),
+(2, 'Studio', 'Brisbane', 300000, 1, 1, 'Compact studio apartment perfect for singles.');
+
+-- Insert statements for Services
+INSERT INTO Services (category_id, service_name, provider, price, description)
+VALUES
+(3, 'Plumbing', 'QuickFix', 100, 'Professional plumbing services for residential properties.'),
+(3, 'Electrical', 'BrightSpark', 150, 'Experienced electricians for all your needs.'),
+(3, 'Cleaning', 'Sparkle & Shine', 80, 'Top-to-bottom cleaning services to make your home shine.');
+
+-- Insert statements for Electronics
+INSERT INTO Electronics (category_id, brand, model, price, description)
+VALUES
+(4, 'Apple', 'iPhone 14', 999, 'Latest model with advanced features and sleek design.'),
+(4, 'Samsung', 'Galaxy S21', 850, 'High-performance smartphone with cutting-edge technology.'),
+(4, 'Sony', 'PlayStation 5', 500, 'Next-gen gaming console for immersive experiences.');
+
+-- Insert statements for Furniture
+INSERT INTO Furniture (category_id, type, material, price, description)
+VALUES
+(5, 'Sofa', 'Leather', 800, 'Comfortable leather sofa with modern design.'),
+(5, 'Dining Table', 'Wood', 600, 'Elegant wooden dining table with seating for six.'),
+(5, 'Bed', 'Metal', 500, 'Sturdy metal bed frame with a contemporary look.');
