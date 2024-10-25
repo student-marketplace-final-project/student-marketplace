@@ -67,4 +67,58 @@ const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
     });
 };
 
-module.exports = { fetchAllAds };
+
+const searchProductsByName = (searchTerm) => {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT ad_id, title, description, price, image, created_at
+                       FROM Ads
+                       WHERE title LIKE ?`;
+        const values = [`%${searchTerm}%`];
+
+        db.query(query, values, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
+const addAd = (adData) => {
+    return new Promise((resolve, reject) => {
+        const query = `INSERT INTO Ads (user_id, title, description, price, image, category_type, category_id, phone_number, location_lat, location_lon)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [
+            adData.user_id,
+            adData.title,
+            adData.description,
+            adData.price,
+            adData.image,
+            adData.category_type,
+            adData.category_id,
+            adData.phone_number,
+            adData.location_lat,
+            adData.location_lon
+        ];
+
+        db.query(query, values, (err, result) => {
+            if (err) return reject(err);
+            resolve(result.insertId); // Return the ID of the inserted ad
+        });
+    });
+};
+
+const addCategoryData = (table, categoryData) => {
+    return new Promise((resolve, reject) => {
+        const columns = Object.keys(categoryData).join(', ');
+        const placeholders = Object.keys(categoryData).map(() => '?').join(', ');
+        const values = Object.values(categoryData);
+
+        const query = `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`;
+
+        db.query(query, values, (err, result) => {
+            if (err) return reject(err);
+            resolve(result.insertId); // Return the ID of the inserted record
+        });
+    });
+};
+
+module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData };
