@@ -1,12 +1,5 @@
-const mysql = require('mysql2');
 
-// Database connection setup
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'y93624bp',
-    database: 'Marketplace'
-});
+const db = require('../config/db');
 
 const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
     return new Promise((resolve, reject) => {
