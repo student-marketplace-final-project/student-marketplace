@@ -15,11 +15,6 @@ CREATE TABLE UserDetails (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Categories (
-    category_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(255) UNIQUE NOT NULL
-);
-
 CREATE TABLE Ads (
     ad_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -27,13 +22,13 @@ CREATE TABLE Ads (
     description TEXT,
     price DECIMAL(10, 2),
     image LONGTEXT,
-    category_id INT,
     phone_number VARCHAR(15),
     location_lat DECIMAL(10, 8),
     location_lon DECIMAL(11, 8),
+    category_type VARCHAR(50) NOT NULL,
+    category_id INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id),
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id)
 );
 
 CREATE TABLE Comments (
@@ -66,68 +61,55 @@ CREATE TABLE Transactions (
 );
 
 
---Creating the child tables of categories
+-- Creating the child tables of Ads
 -- Creating child tables
 
 CREATE TABLE Vehicles (
     vehicle_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
     make VARCHAR(255) NOT NULL,
     model VARCHAR(255) NOT NULL,
     year INT,
-    price DECIMAL(10, 2),
-    mileage INT,
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    mileage INT
 );
 
 CREATE TABLE Accommodation (
     accommodation_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
     type VARCHAR(255) NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    price DECIMAL(10, 2),
     bedrooms INT,
     bathrooms INT,
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    available_date DATE,
+    parking BOOLEAN,
+    smoking BOOLEAN,
+    furnished BOOLEAN,
+    pets BOOLEAN
 );
 
 CREATE TABLE Services (
     service_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
-    service_name VARCHAR(255) NOT NULL,
     provider VARCHAR(255),
-    price DECIMAL(10, 2),
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    opening_hours VARCHAR(255)
 );
 
 CREATE TABLE Electronics (
     electronic_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
+    type VARCHAR(255) NOT NULL,
     brand VARCHAR(255) NOT NULL,
     model VARCHAR(255) NOT NULL,
-    price DECIMAL(10, 2),
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    `condition` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Furniture (
     furniture_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
     type VARCHAR(255) NOT NULL,
     material VARCHAR(255),
-    price DECIMAL(10, 2),
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    `condition` VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE Appliances (
+    appliance_id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(255) NOT NULL,
+    `condition` VARCHAR(255) NOT NULL
+);
 
 -- Alter the existing table to update the datatype
---ALTER TABLE Ads MODIFY COLUMN image LONGTEXT;
+-- ALTER TABLE Ads MODIFY COLUMN image LONGTEXT;
