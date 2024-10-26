@@ -1,0 +1,141 @@
+.login-bg {
+  background-color: #007db7;
+}
+.container {
+  background-color: white;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 50px;
+}
+.containermargin{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.innerContent {
+  position: relative;
+  margin: 10px auto 0px auto;
+  padding: 10px;
+}
+
+.Login-label {
+  position: relative;
+  color: #007db7;
+  text-align: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  display: flex;
+  padding: 10px;
+}
+
+.Welcome-label {
+  position: relative;
+  padding: 10px;
+  color: #000000;
+  font-size: 25px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 500;
+}
+.Top-label {
+  color: #007db7;
+  padding-left: 10px;
+  font-size: 15px;
+  margin-top: 20px;
+}
+.Top-label-1 {
+  color: #007db7;
+  padding-left: 10px;
+  font-size: 15px;
+}
+
+.icon {
+  position: absolute;
+  font-size: 25px;
+  color: black;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.forgot-Pass {
+  color: #007db7;
+  justify-content: flex-end;
+  align-items: flex-end;
+  display: flex;
+  margin: 8px;
+}
+
+.Register {
+  color: #007db7;
+  margin-left: 2px;
+}
+
+.activation {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: #000000;
+  font-size: 25px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  margin-top: 50px;
+}
+.Verify-mail {
+  color: #000000;
+}
+
+.input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  // margin-top: 10px;
+}
+
+.otp-input {
+  width: 10px;
+  background-color: #007db7;
+}
+
+.Display {
+  // margin-right: 15px;
+  width: 70%;
+  color: #007db7;
+  // background-color: #000000;
+}
+
+.Display-1 {
+  margin-right: 15px;
+  width: 40%;
+  color: #007db7;
+  margin-left: 10%;
+}
+
+.Display-2 {
+  margin-right: 15px;
+  width: 40%;
+  color: #007db7;
+  margin-top: 20px;
+}
+
+///profile
+.profile-div {
+  display: flex;
+  flex-direction: row;
+}
+.user-icons {
+  font-size: 20px;
+  padding: 0px 10px 0px 0px;
+  color: #000000;
+}
+.labels {
+  margin: 5px 0px 0px 0px;
+}

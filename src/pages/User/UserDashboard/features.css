@@ -1,0 +1,174 @@
+.view-all {
+  padding: 10px;
+  padding-left: 60px;
+  padding-right: 60px;
+  display: flex;
+  justify-content: center;
+  background-color: #de7800;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.search-board{
+  background-color: black;
+  padding: 10px;
+}
+
+.view-all-link {
+  color: white;
+  margin-left: 5px;
+  font-weight: 400;
+  font-size: 30px;
+}
+.post-ad{
+  background-color: black;
+  color: white;
+  height: 50px;
+  width: 100px;
+  font-weight: bold;
+  text-decoration-color: white;
+}
+/* most popular */
+.most-popular {
+  width: 505px;
+  border-radius: 5px;
+  border: 2px solid #bdbdbd;
+  background-color: white;
+}
+.product-price {
+  background-color: #060606a9;
+  width: 160px;
+  box-shadow: 0px 6px 12px rgba(222, 120, 0, 0.2);
+  display: flex;
+  bottom: -60px;
+  position: absolute;
+  
+  /* float: right; */
+  /* padding-right: 10; */
+  /* left: 60px; */
+}
+.product-in {
+  bottom: 25px;
+  box-shadow: none;
+  display: block;
+  /* left: 15px; */
+
+  /* width: 408px; */
+  /* justify-content: center; */
+  /* background: rgba(0, 0, 0, 0.3) none repeat scroll 0 0; */
+  z-index: 20;
+}
+.product-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+}
+.rates {
+  color: white;
+  font-size: 36px;
+}
+
+/* porfolio */
+.portfolio-div {
+  background-color: white;
+  width: 620px;
+  height: 330px;
+  box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  justify-content: center;
+}
+.portfolio {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  left: 100px;
+}
+.portfolio-in {
+  box-shadow: none;
+  display: block;
+
+  z-index: 20;
+}
+.portfolio-content {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: -305px;
+}
+.portfolio-right {
+  width: 620px;
+  /* height: 330px; */
+  border-radius: 15px;
+  left: -108px;
+}
+.portfolio-right-in {
+  box-shadow: none;
+  z-index: 20;
+}
+.portfolio-right-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.product-img {
+  border-radius: 5px;
+  width: 483px;
+  height: 380px;
+  background-color: #bdbdbd;
+}
+
+.product-text{
+  font-size: 30px;
+  color: black;
+}
+.city-text{
+  font-size: 20px;
+}
+.port-img {
+  border-radius: 50%;
+  /* box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.15); */
+  width: 280px;
+  height: 280px;
+}
+
+.port-name {
+  position: absolute;
+  font-weight: 500;
+  font-size: 40px;
+  padding-left: 32%;
+}
+
+.rating {
+  /* color: #de7800; */
+  padding-top: 70px;
+}
+
+.reviews {
+  padding-top: 70px;
+  padding-left: 5px;
+  font-weight: 500;
+  font-size: 22px;
+  color: #808080;
+  width: 185px;
+}
+
+.chef-name {
+  padding-top: 210px;
+  padding-right: 30px;
+  font-weight: 500;
+  font-size: 20px;
+  color: #de7800;
+  width: 196px;
+}
+
+.chef-img-div {
+  padding-top: 200px;
+  width: 119px;
+  height: 123px;
+}
+
+.port-chef-img {
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.15);
+}
