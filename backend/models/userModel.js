@@ -1,13 +1,5 @@
-const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
-
-// Database connection setup
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'y93624bp',
-    database: 'Marketplace'
-});
+const db = require('../config/db')
 
 // Register a new user
 const registerUser = async (userDetails) => {

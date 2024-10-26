@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const getUserProfile = (req, res) => {
-    const userId = req.params.id;
+    const userId = req.user.userId;
 
     // Query to get user details based on user ID
     const query = 'SELECT user_id, name, address, phone_number, email, is_student, created_at FROM UserDetails WHERE user_id = ?';
@@ -21,7 +21,7 @@ const getUserProfile = (req, res) => {
 };
 
 const updateUserProfile = (req, res) => {
-    const userId = req.params.id;
+    const userId = req.user.userId;
     const { name, address, phone_number, email, is_student } = req.body;
 
     // Query to update user details based on user ID
