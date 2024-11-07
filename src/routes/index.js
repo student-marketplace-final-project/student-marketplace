@@ -15,13 +15,17 @@ import UserDashboard from "../pages/User/UserDashboard/index"
 // Dashboard
 import Modal from "../pages/User/AddProduct/model"
 import Product from "../pages/User/AddProduct/index"
-import AddForm from "../pages/User/AddProduct/AddForm"
+import AddForm from "../pages/User/AddProduct/vehical"
+import Accommodation from "../pages/User/AddProduct/accomodation";
+import Electronics from "../pages/User/AddProduct/electronics";
+import Profile from "../pages/User/AddProduct/userprofile"
 
 //Utility
 import Error404 from "../pages/Utility/Error404";
 import Error500 from "../pages/Utility/Error500";
 
 import ResendVerification from "../pages/AuthenticationFlow/Login/resendVerificationMail";
+
 
 const authProtectedRoutes = [
   // this route should be at the end of all other routes
@@ -46,7 +50,9 @@ const publicRoutes = [
   { path: "/product", component: Product },
   { path: "/modal", component: Modal },
   { path: "/addform", component: AddForm },
-
+  { path: "/accommodation", component: Accommodation },
+  { path: "/electronics", component: Electronics },
+  { path: "/profile", component: Profile },
 
   { path: "/pages-404", component: Error404 },
   { path: "/pages-500", component: Error500 },

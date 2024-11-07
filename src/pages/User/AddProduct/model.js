@@ -12,7 +12,7 @@ const CategoryModal = () => {
     { name: 'Accommodation', icon: 'ri-caravan-line', path: '/accommodation' },
     { name: 'Services', icon: 'ri-e-bike-2-line', path: '/services' },
     { name: 'Electronics', icon: 'fa-laptop', path: '/electronics' },
-    { name: 'Furniture', icon: 'ri-macbook-line', path: '/furniture' }
+    { name: 'Furniture', icon: 'ri-macbook-line', path: '/profile' }
   ];
 
   return (

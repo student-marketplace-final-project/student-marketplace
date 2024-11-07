@@ -15,6 +15,7 @@ import {
   NotificationManager,
 } from "react-notifications";
 
+
 class Registration extends Component {
   constructor(props) {
     super(props);
@@ -29,8 +30,8 @@ class Registration extends Component {
         .email("Please enter valid email address"),
       
       contact: Yup.number()
-        .required("Please enter contact details")
-        .max(10,"Number contains only ten numbers"),
+        .required("Please enter contact details"), 
+        //.max(10,"Number contains only ten numbers"),
       
         address: Yup.string()
         .required("Please enter address"),
@@ -83,21 +84,21 @@ class Registration extends Component {
 
   handlesubmit = (values) => {
     const body = {
-      fullname: values.name,
+      name: values.name,
       email: values.email,
-      contact:values.contact,
+      phone_number:values.contact,
       address:values.address,
       password: values.password,
-      confirmPassword: values.confirmpassword,
     };
     authRegister(body)
       .then((response) => {
+        console.log("register response--->>>",response);
         localStorage.setItem(Storage.USER_EMAIL, values.email);
-        this.props.history.push("/activation");
+       // this.props.history.push("/activation");
         NotificationManager.success(
           "You have successfully registered",
           "",
-          700
+          201
         );
       })
       .catch((err) => {
