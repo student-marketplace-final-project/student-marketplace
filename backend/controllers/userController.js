@@ -41,7 +41,35 @@ const updateUserProfile = (req, res) => {
     });
 };
 
+const archiveUser = (req, res) => {
+    const { id } = req.params;
+    const query = 'UPDATE UserDetails SET is_archived = TRUE WHERE user_id = ?';
+
+    db.query(query, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Server error archiving user' });
+        res.json({ message: 'User archived successfully' });
+    });
+};
+
+const archiveOwnUser = (req, res) => {
+    const userId = req.user.userId; // Extract user ID from the authenticated token
+
+    const query = 'UPDATE UserDetails SET is_archived = 1 WHERE user_id = ?';
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Server error while archiving account' });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'User not found or already archived' });
+        }
+        res.json({ message: 'Account archived successfully' });
+    });
+};
+
 module.exports = {
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    archiveUser,
+    archiveOwnUser,
 };

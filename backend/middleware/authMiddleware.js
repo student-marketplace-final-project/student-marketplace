@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const db = require('../config/db');
 
 const authenticateUser = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1]; // Extract the token from the header
@@ -17,4 +18,45 @@ const authenticateUser = (req, res, next) => {
     }
 };
 
-module.exports = authenticateUser;
+const requireAdmin = (req, res, next) => {
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Access denied: Admins only' });
+    }
+    next();
+};
+
+const checkAdOwnership = (req, res, next) => {
+    const adId = req.params.id;
+    const userId = req.user.userId; // Ensure `req.user` has been populated by the `authenticateUser` middleware
+
+    const query = 'SELECT user_id FROM Ads WHERE ad_id = ?';
+    db.query(query, [adId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Server error while verifying ad ownership' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Ad not found' });
+        }
+
+        const adOwnerId = results[0].user_id;
+        if (adOwnerId !== userId) {
+            return res.status(403).json({ error: 'Access denied: You can only archive your own ads' });
+        }
+
+        next();
+    });
+};
+
+const requireOwnershipOrAdmin = (req, res, next) => {
+    const { id } = req.params; // resource ID, e.g., user or ad
+    const { userId, role } = req.user;
+    console.log(userId)
+
+    if (role === 'admin' || userId == id) {
+        return next();
+    }
+    return res.status(403).json({ error: 'Access denied' });
+};
+
+module.exports = { authenticateUser, requireAdmin, requireOwnershipOrAdmin, checkAdOwnership };

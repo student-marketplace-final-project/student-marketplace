@@ -2,6 +2,68 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const db = require('../config/db');
+const { validationResult } = require('express-validator');
+const { findUserByEmail, registerUser } = require("../models/userModel")
+
+
+// Register function
+const register = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+    try {
+        // Check if user already exists
+        const existingUser = await findUserByEmail(email);
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        // Register user
+        await registerUser(req.body);
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// Login function
+const login = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+        const user = await findUserByEmail(email);
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+
+        // Check if user account is archived
+        if (user.is_archived === 1) {
+            return res.status(403).json({ message: 'Account is archived. Please contact support for assistance.' });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign({ userId: user.user_id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(200).json({ token });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
 // Function to generate the reset token
 const generateResetToken = (userId) => {
@@ -33,7 +95,7 @@ const sendResetEmail = async (email, token) => {
 };
 
 // Controller to handle the forgot password request
-exports.forgotPassword = (req, res) => {
+const forgotPassword = (req, res) => {
     const { email } = req.body;
 
     const query = 'SELECT user_id FROM UserDetails WHERE email = ?';
@@ -55,7 +117,7 @@ exports.forgotPassword = (req, res) => {
 };
 
 // Function to handle the password reset
-exports.resetPassword = (req, res) => {
+const resetPassword = (req, res) => {
     const { token } = req.params;
     const { newPassword } = req.body;
 
@@ -82,3 +144,5 @@ exports.resetPassword = (req, res) => {
         res.status(400).json({ error: 'Invalid or expired token' });
     }
 };
+
+module.exports = { register, login, forgotPassword, resetPassword };

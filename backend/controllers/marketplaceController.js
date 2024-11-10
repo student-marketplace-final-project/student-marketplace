@@ -1,4 +1,5 @@
 const { fetchAllAds, searchProductsByName, addAd, addCategoryData } = require('../models/marketplaceModel');
+const db = require('../config/db');
 
 // Controller function to get all ads with optional filters and sorting
 const getAllAds = async (req, res) => {
@@ -49,4 +50,19 @@ const postAd = async (req, res) => {
     }
 };
 
-module.exports = { getAllAds, searchProducts, getCategories, postAd };
+const archiveAd = (req, res) => {
+    const adId = req.params.id;
+    const query = 'UPDATE Ads SET is_archived = 1 WHERE ad_id = ?';
+
+    db.query(query, [adId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error archiving ad' });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'Ad not found' });
+        }
+        res.json({ message: 'Ad archived successfully' });
+    });
+};
+
+module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd };
