@@ -29,6 +29,7 @@ const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
             LEFT JOIN Electronics ON Ads.category_id = Electronics.electronic_id AND Ads.category_type = 'Electronics'
             LEFT JOIN Furniture ON Ads.category_id = Furniture.furniture_id AND Ads.category_type = 'Furniture'
             LEFT JOIN Appliances ON Ads.category_id = Appliances.appliance_id AND Ads.category_type = 'Appliances'
+            WHERE Ads.is_archived = 0
         `;
 
         // Initialize conditions and values arrays
@@ -103,7 +104,7 @@ const searchProductsByName = (searchTerm) => {
     return new Promise((resolve, reject) => {
         const query = `SELECT ad_id, title, description, price, image, created_at
                        FROM Ads
-                       WHERE title LIKE ?`;
+                       WHERE is_archived = 0 AND title LIKE ?`;
         const values = [`%${searchTerm}%`];
 
         db.query(query, values, (err, results) => {

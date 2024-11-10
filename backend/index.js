@@ -3,8 +3,12 @@ const express = require('express');
 const authRoutes = require('./routes/authRoutes');
 const marketplaceRoutes = require('./routes/marketplaceRoutes');
 const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
 
 app.use(express.json());
 
