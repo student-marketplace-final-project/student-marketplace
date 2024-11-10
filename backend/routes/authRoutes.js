@@ -3,6 +3,8 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { registerUser, findUserByEmail } = require('../models/userModel');
+const authController = require('../controllers/authController');
+
 
 const router = express.Router();
 
@@ -75,5 +77,11 @@ router.post(
         }
     }
 );
+
+// Route for requesting password reset
+router.post('/forgot-password', authController.forgotPassword);
+
+// Route for resetting password with the token
+router.post('/reset-password/:token', authController.resetPassword);
 
 module.exports = router;

@@ -12,6 +12,8 @@ CREATE TABLE UserDetails (
     email VARCHAR(255) UNIQUE NOT NULL,
     is_student BIT,
     password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user',
+    is_archived BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -25,6 +27,7 @@ CREATE TABLE Ads (
     phone_number VARCHAR(15),
     location_lat DECIMAL(10, 8),
     location_lon DECIMAL(11, 8),
+    is_archived BOOLEAN DEFAULT FALSE,
     category_type VARCHAR(50) NOT NULL,
     category_id INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
