@@ -28,6 +28,8 @@ class Activation extends Component {
   }
 
   handlesubmit = (values) => {
+    console.log("activation value",values);
+
     const body = {
       otp: values.otp,
       email: localStorage.getItem(Storage.USER_EMAIL),

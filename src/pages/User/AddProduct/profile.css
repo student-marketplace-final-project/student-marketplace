@@ -1,35 +1,34 @@
-.profilecard{
-    
+.profilecard {
     background-color: #fff;
     display: flex;
     margin-top: 40px;
     padding: 20px;
 }
-.col2{
-   
+
+.col2 {
     display: flex;
     margin-top: 40px;
-   
 }
-.list-card{
-    background-color: aquamarine;
-}
-.cardbody{
+
+
+.cardbody {
     background-color: #fff;
 }
+
 .avatar {
     width: 120px;
     height: 120px;
     background-color: #ddd;
     border-radius: 50%;
-   
 }
+
 .desc-label {
     color: #000;
     padding-left: 10px;
     font-size: 17px;
     margin-top: 20px;
-  }
+}
+
 .user-profile {
     display: flex;
     background-color: #fff;
@@ -147,4 +146,21 @@
     font-size: 20px;
     cursor: pointer;
     color: #333;
+}
+
+.editbtn {
+    background-color: #007db7;
+    width: 60px;
+    height: 40px;
+    color: #007db7;
+
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+}
+
+.profileheader {
+   
+    display: flex;
+    justify-content: space-between;
 }

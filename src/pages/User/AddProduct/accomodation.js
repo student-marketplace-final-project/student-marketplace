@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Formik, Form } from 'formik';
-import { Card, CardBody, Col, Row, Container, FormGroup, Label, Input, CardTitle, CardSubtitle } from "reactstrap";
+import { Card, CardBody, Col, Row } from "reactstrap";
 import * as Yup from 'yup';
 import "./product.css"
 import HeaderFile from '../../../components/Custom/header';
@@ -19,6 +19,12 @@ const Accommodation = () => {
     const [selectedFurnished, setSelectedFurnished] = useState("furnished_yes");
     const [selectedPets, setSelectedPets] = useState("pets_yes");
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [initialValues, setInitialValues] = useState({
+        title: '', type: '', price: '', availableDate: '', no_of_bedrooms: '',
+        no_of_bathrooms: '', parking: '', smoking: '',
+        furnished: '', pets: '',
+        description: ''
+    });
 
     const formatBytes = (bytes, decimals = 2) => {
         if (bytes === 0) return "0 Bytes";
@@ -40,14 +46,6 @@ const Accommodation = () => {
         setSelectedFiles(mappedFiles);
     }, []);
 
-
-
-    const initialValues = {
-        title: '', type: '', price: '', availableDate: '', no_of_bedrooms: '',
-        no_of_bathrooms: '', parking: '', smoking: '',
-        furnished: '', pets: '',
-        description: ''
-    }
     // Yup validation schema
     const validationSchema = Yup.object({
         title: Yup.string().required(ERROR_CONST.TITLE),
@@ -64,15 +62,10 @@ const Accommodation = () => {
 
     });
 
-    // Handle form submission
-    const handleSubmit = (values) => {
-        console.log("Form Data Submitted:", values);
-        // Navigate to home page after submission
-    };
 
 
     // Function to handle the change in radio button selection
-    const handleChange = (event) => {
+    const handleParkingChange = (event) => {
         setSelectedParking(event.target.value);
     };
     const handleSmokingChange = (event) => {
@@ -84,6 +77,12 @@ const Accommodation = () => {
     const handlePetsChange = (event) => {
         setSelectedPets(event.target.value);
     };
+    // Handle form submission
+    const handleSubmit = (values) => {
+        console.log("Form Data Submitted:", values);
+        // Navigate to home page after submission
+    };
+
 
     return (
         <React.Fragment>
@@ -98,7 +97,7 @@ const Accommodation = () => {
                                 validationSchema={validationSchema}
                                 onSubmit={handleSubmit}
                             >
-                                {({ values, errors, touched }) => (
+                                {({ values, errors, touched, handleChange }) => (
                                     <Form>
                                         <div>
                                             <label className="Top-label">Title*</label>
@@ -108,6 +107,7 @@ const Accommodation = () => {
                                                 values={values}
                                                 errors={errors}
                                                 touched={touched}
+                                                handleChange={handleChange}
                                                 placeholder={'Enter title'}
                                             />
 
@@ -119,15 +119,17 @@ const Accommodation = () => {
                                             values={values}
                                             errors={errors}
                                             touched={touched}
+                                            handleChange={handleChange}
                                             placeholder={'Enter type'}
                                         />
                                         <label className="Top-label">Price*</label>
                                         <CustomInput
                                             type='text'
-                                            name='Price'
+                                            name='price'
                                             values={values}
                                             errors={errors}
                                             touched={touched}
+                                            handleChange={handleChange}
                                             placeholder={'Enter Price'}
                                         />
 
@@ -138,6 +140,7 @@ const Accommodation = () => {
                                             values={values}
                                             errors={errors}
                                             touched={touched}
+                                            handleChange={handleChange}
                                             placeholder={'Enter Available Date'}
                                         />
                                         <label className="Top-label">Number of Bedrooms*</label>
@@ -147,6 +150,7 @@ const Accommodation = () => {
                                             values={values}
                                             errors={errors}
                                             touched={touched}
+                                            handleChange={handleChange}
                                             placeholder={'Enter Number of Bedrooms'}
                                         />
                                         <label className="Top-label">Number of Bathrooms*</label>
@@ -156,6 +160,7 @@ const Accommodation = () => {
                                             values={values}
                                             errors={errors}
                                             touched={touched}
+                                            handleChange={handleChange}
                                             placeholder={'Enter Number of Bathrooms'}
                                         />
                                         <label className="Top-label">Does your accommodation has parking facility?*</label>
@@ -167,8 +172,9 @@ const Accommodation = () => {
                                                     type="radio"
                                                     value="parking_yes"
                                                     checked={selectedParking === "parking_yes"}
-                                                    onChange={handleChange}
+                                                    onChange={handleParkingChange}
                                                     className='radioButton'
+                                                    id="parking_yes"
                                                 />
                                             </div>
                                             <div className='container'>
@@ -178,8 +184,9 @@ const Accommodation = () => {
                                                     className='radioButton'
                                                     type="radio"
                                                     value="parking_no"
+                                                    id="parking_no"
                                                     checked={selectedParking === "parking_no"}
-                                                    onChange={handleChange}
+                                                    onChange={handleParkingChange}
                                                 />
                                             </div>
                                         </div>
@@ -192,6 +199,8 @@ const Accommodation = () => {
                                                 <input
                                                     type="radio"
                                                     value="smoking_yes"
+                                                    id="smoking_yes"
+
                                                     checked={selectedSmoking === "smoking_yes"}
                                                     onChange={handleSmokingChange}
                                                     className='radioButton'
@@ -204,6 +213,8 @@ const Accommodation = () => {
                                                     className='radioButton'
                                                     type="radio"
                                                     value="smoking_no"
+                                                    id="smoking_no"
+
                                                     checked={selectedSmoking === "smoking_no"}
                                                     onChange={handleSmokingChange}
                                                 />
@@ -216,6 +227,8 @@ const Accommodation = () => {
                                                 <input
                                                     type="radio"
                                                     value="furnished_yes"
+                                                    id="furnished_yes"
+
                                                     checked={selectedFurnished === "furnished_yes"}
                                                     onChange={handleFurnishedChange}
                                                     className='radioButton'
@@ -228,6 +241,8 @@ const Accommodation = () => {
                                                     className='radioButton'
                                                     type="radio"
                                                     value="furnished_no"
+                                                    id="furnished_no"
+
                                                     checked={selectedFurnished === "furnished_no"}
                                                     onChange={handleFurnishedChange}
                                                 />
@@ -240,6 +255,7 @@ const Accommodation = () => {
                                                 <input
                                                     type="radio"
                                                     value="pets_yes"
+                                                    id="pets_yes"
                                                     checked={selectedPets === "pets_yes"}
                                                     onChange={handlePetsChange}
                                                     className='radioButton'
@@ -252,6 +268,7 @@ const Accommodation = () => {
                                                     className='radioButton'
                                                     type="radio"
                                                     value="pets_no"
+                                                    id="pets_no"
                                                     checked={selectedPets === "pets_no"}
                                                     onChange={handlePetsChange}
                                                 />
@@ -262,7 +279,7 @@ const Accommodation = () => {
 
                                         <Card>
                                             <CardBody>
-                                                
+
                                                 <Form>
                                                     <Dropzone onDrop={handleAcceptedFiles}>
                                                         {({ getRootProps, getInputProps }) => (
@@ -318,6 +335,7 @@ const Accommodation = () => {
                                             values={values}
                                             errors={errors}
                                             touched={touched}
+                                            handleChange={handleChange}
                                             placeholder={"Enter description"}
                                         />
 
@@ -326,12 +344,11 @@ const Accommodation = () => {
                                                 type="submit"
                                                 name="btn"
                                                 className="custom-btn"
-                                            //onSubmit={(values) => this.handlesubmit(values)}
+                                                onSubmit={(values) => handleSubmit(values)}
                                             >
                                                 Post
                                             </Button>
                                         </div>
-
                                     </Form>
                                 )}
                             </Formik>

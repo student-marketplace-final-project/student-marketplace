@@ -18,7 +18,8 @@ import Product from "../pages/User/AddProduct/index"
 import AddForm from "../pages/User/AddProduct/vehical"
 import Accommodation from "../pages/User/AddProduct/accomodation";
 import Electronics from "../pages/User/AddProduct/electronics";
-import Profile from "../pages/User/AddProduct/userprofile"
+import Profile from "../pages/User/AddProduct/userprofile";
+import ProductDescription from "../pages/User/UserDashboard/productDescription";
 
 //Utility
 import Error404 from "../pages/Utility/Error404";
@@ -53,6 +54,7 @@ const publicRoutes = [
   { path: "/accommodation", component: Accommodation },
   { path: "/electronics", component: Electronics },
   { path: "/profile", component: Profile },
+  { path: "/productDescription", component: ProductDescription },
 
   { path: "/pages-404", component: Error404 },
   { path: "/pages-500", component: Error500 },

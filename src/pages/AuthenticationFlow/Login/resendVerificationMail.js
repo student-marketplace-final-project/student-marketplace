@@ -28,6 +28,7 @@ class ResendVerification extends Component {
   }
 
   handlesubmit = (values) => {
+    console.log("resend verification value",values);
     const body = {
       otp: values.otp,
       email: localStorage.getItem("Email"),

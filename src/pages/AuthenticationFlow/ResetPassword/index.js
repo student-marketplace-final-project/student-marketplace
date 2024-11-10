@@ -48,6 +48,8 @@ class Login extends Component {
   };
 
   handleSubmit = (values) => {
+    console.log("reserpassword value",values);
+
     const token = this.props.location.search;
     const newToken = token.split("?token=")[1];
 

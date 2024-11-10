@@ -32,6 +32,7 @@ class ForgotPassword extends Component {
   }
 
   handleSubmit = (values, { resetForm }) => {
+    console.log("----> forgot password",values);
     authForgot(values.email)
       .then(() => {
         resetForm();

@@ -83,6 +83,8 @@ class Registration extends Component {
   }
 
   handlesubmit = (values) => {
+    console.log("regidtration value",values);
+
     const body = {
       name: values.name,
       email: values.email,

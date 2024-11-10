@@ -1,4 +1,4 @@
-export const DevURL = "http://localhost:5000/api/";
+export const DevURL = "http://localhost:5000/api/auth/";
 
 // Authntication URL
 export const LOGIN_URL = "login";

@@ -43,6 +43,9 @@ class Usage extends Component {
             </div>
             <div className="d-flex custom-btn"  >
               <Button style={{ backgroundColor: "black", textDecorationColor: "white", height: 50, width: 100 }} onClick={(values) => this.handleSubmit(values)} >{"Post Ad"}</Button>
+              <Link to="/profile">
+              <i class="ri-user-settings-fill" style={{fontSize:"30px",color:"#fff",padding:"20px",backgroundColor:"#007db7"}}></i>
+             </Link>
             </div>
           </div>
         </header>
@@ -68,17 +71,15 @@ class Usage extends Component {
                         <Col md={6}>
                           <div>
                             <h5>Clothes & Accessories</h5>
-
                           </div>
                         </Col>
                       </Row>
 
                       <ul className="list-inline my-3 ecommerce-sortby-list justify-content-center">
                         <li className="list-inline-item active ml-1"><Link to="#">Home</Link></li>
-                        <li className="list-inline-item ml-1"><Link to="#">Recently Viewed</Link></li>
+                        <li className="list-inline-item ml-1"><Link to="/productDescription">Recently Viewed</Link></li>
                         <li className="list-inline-item ml-1"><Link to="#">Watchlist</Link></li>
                         <li className="list-inline-item ml-1"><Link to="#">Saved Searches</Link></li>
-
                       </ul>
 
                       <Row className="no-gutters">

@@ -7,6 +7,7 @@ import "../../AuthenticationFlow/auth.scss";
 import { Link } from "react-router-dom";
 import { errorsConst as ERROR_CONST } from "../../../components/Constants/errors";
 import { placeholderConst as PLACEHOLDER_CONST } from "../../../components/Constants/placeholder";
+import { authLogin } from "../../../Services/authServices";
 
 import {
   NotificationContainer,
@@ -53,15 +54,17 @@ class Login extends Component {
   };
 
   handlesubmit = (values) => {
+    console.log("login value",values);
     const body = {
       email: values.email,
       password: values.password,
     };
-    this.props.history.push("/usage");
+    //this.props.history.push("/usage");
 
-    /*authLogin(body)
+    authLogin(body)
       .then((response) => {
-        localStorage.setItem("A##KEY", response.data.data.data.accessToken);
+        console.log("->>>login response",response)
+        //localStorage.setItem("A##KEY", response.data.data.data.accessToken);
         // NotificationManager.success("Login Successfully");
         this.props.history.push("/usage");
       })
@@ -69,51 +72,15 @@ class Login extends Component {
         const errData =
           error && error.data && error.data.error && error.data.error.message;
         if (errData === "err_13") {
-          NotificationManager.error("Invalid email or password", "", 700);
+          //NotificationManager.error("Invalid email or password", "", 700);
         } else if (errData === "err_7") {
-          NotificationManager.error("Invalid email address", "", 700);
-        } else if (errData === "err_8") {
-          NotificationManager.error(
-            "Password must be at least 8 characters in length",
-            "",
-            700
-          );
+          //NotificationManager.error("Invalid email address", "", 700);
         } else if (errData === "err_12") {
           localStorage.setItem("Email", values.email);
-          this.props.history.push("/verification");
-          NotificationManager.error(
-            "Your account is not verified. We have send new verifiction email.",
-            "",
-            700
-          );
-        } else if (errData === "err_11") {
-          NotificationManager.error(
-            "User does not belong to any account",
-            "",
-            700
-          );
-        } else if (errData === "err_15") {
-          NotificationManager.error(
-            "Your account is deactivated. Please Contact us",
-            "",
-            700
-          );
-        } else if (errData === "err_14") {
-          NotificationManager.error("Your account is deleted", "", 700);
-        } else if (errData === "err_16") {
-          NotificationManager.error(
-            "	Please login with google account",
-            "",
-            700
-          );
-        } else if (errData === "err_17") {
-          NotificationManager.error(
-            "Please login with facebook account",
-            "",
-            700
-          );
-        }
-      });*/
+          //this.props.history.push("/verification");
+        
+        } 
+      });
   };
 
   render() {
