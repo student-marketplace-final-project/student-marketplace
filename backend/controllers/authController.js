@@ -82,7 +82,7 @@ const sendResetEmail = async (email, token) => {
         },
     });
 
-    const resetLink = `http://localhost:5000/api/auth/reset-password/${token}`;
+    const resetLink = `http://localhost:3001/auth/reset-password/${token}`;
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
