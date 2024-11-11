@@ -1,12 +1,13 @@
 const express = require('express');
-const { getAllAds, searchProducts, getCategories, postAd } = require('../controllers/marketplaceController');
-const { archiveAd } = require('../controllers/marketplaceController');
-const { authenticateUser, requireAdmin, checkAdOwnership } = require('../middleware/authMiddleware');
+const { archiveAd, getAllAds, searchProducts, getCategories, postAd, getSingleAd } = require('../controllers/marketplaceController');
+const { authenticateUser, checkAdOwnership } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Route to get all ads with optional filters and sorting
 router.get('/ads', authenticateUser, getAllAds);
+
+router.get('/ads/:id', authenticateUser, getSingleAd);
 
 router.get('/ads/search', authenticateUser, searchProducts);
 

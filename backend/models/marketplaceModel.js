@@ -153,4 +153,44 @@ const addCategoryData = (table, categoryData) => {
     });
 };
 
-module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData };
+const fetchAdById = (adId) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT
+                Ads.ad_id,
+                Ads.title,
+                Ads.description,
+                Ads.price,
+                Ads.image,
+                Ads.created_at,
+                Ads.location_lat,
+                Ads.location_lon,
+                Ads.category_type,
+                CASE
+                    WHEN Ads.category_type = 'Vehicles' THEN JSON_OBJECT('make', Vehicles.make, 'model', Vehicles.model, 'year', Vehicles.year)
+                    WHEN Ads.category_type = 'Accommodation' THEN JSON_OBJECT('available_date', Accommodation.available_date, 'parking', Accommodation.parking, 'smoking', Accommodation.smoking, 'furnished', Accommodation.furnished, 'pets', Accommodation.pets)
+                    WHEN Ads.category_type = 'Services' THEN JSON_OBJECT('opening_hours', Services.opening_hours)
+                    WHEN Ads.category_type = 'Electronics' THEN JSON_OBJECT('brand', Electronics.brand, 'condition', Electronics.condition)
+                    WHEN Ads.category_type = 'Furniture' THEN JSON_OBJECT('material', Furniture.material, 'condition', Furniture.condition)
+                    WHEN Ads.category_type = 'Appliances' THEN JSON_OBJECT('type', Appliances.type, 'condition', Appliances.condition)
+                    ELSE NULL
+                    END AS category_details
+            FROM Ads
+                     LEFT JOIN Vehicles ON Ads.category_id = Vehicles.vehicle_id AND Ads.category_type = 'Vehicles'
+                     LEFT JOIN Accommodation ON Ads.category_id = Accommodation.accommodation_id AND Ads.category_type = 'Accommodation'
+                     LEFT JOIN Services ON Ads.category_id = Services.service_id AND Ads.category_type = 'Services'
+                     LEFT JOIN Electronics ON Ads.category_id = Electronics.electronic_id AND Ads.category_type = 'Electronics'
+                     LEFT JOIN Furniture ON Ads.category_id = Furniture.furniture_id AND Ads.category_type = 'Furniture'
+                     LEFT JOIN Appliances ON Ads.category_id = Appliances.appliance_id AND Ads.category_type = 'Appliances'
+            WHERE Ads.ad_id = ? AND Ads.is_archived = 0
+        `;
+
+        db.query(query, [adId], (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0]); // Return the single ad object if found
+        });
+    });
+};
+
+
+module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById };

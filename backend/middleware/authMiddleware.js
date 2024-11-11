@@ -10,8 +10,7 @@ const authenticateUser = (req, res, next) => {
 
     try {
         // Verify token and get user ID from the payload
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        req.user = jwt.verify(token, process.env.JWT_SECRET);
         next();
     } catch (err) {
         res.status(401).json({ message: 'Token is not valid' });
@@ -28,6 +27,11 @@ const requireAdmin = (req, res, next) => {
 const checkAdOwnership = (req, res, next) => {
     const adId = req.params.id;
     const userId = req.user.userId; // Ensure `req.user` has been populated by the `authenticateUser` middleware
+    const userRole = req.user.role;
+
+    if (userRole === 'admin') {
+        return next();
+    }
 
     const query = 'SELECT user_id FROM Ads WHERE ad_id = ?';
     db.query(query, [adId], (err, results) => {
@@ -51,9 +55,8 @@ const checkAdOwnership = (req, res, next) => {
 const requireOwnershipOrAdmin = (req, res, next) => {
     const { id } = req.params; // resource ID, e.g., user or ad
     const { userId, role } = req.user;
-    console.log(userId)
 
-    if (role === 'admin' || userId == id) {
+    if (role === 'admin' || userId === id) {
         return next();
     }
     return res.status(403).json({ error: 'Access denied' });

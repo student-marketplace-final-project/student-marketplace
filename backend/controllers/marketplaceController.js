@@ -1,4 +1,4 @@
-const { fetchAllAds, searchProductsByName, addAd, addCategoryData } = require('../models/marketplaceModel');
+const { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById } = require('../models/marketplaceModel');
 const db = require('../config/db');
 
 // Controller function to get all ads with optional filters and sorting
@@ -65,4 +65,20 @@ const archiveAd = (req, res) => {
     });
 };
 
-module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd };
+const getSingleAd = async (req, res) => {
+    const adId = req.params.id;
+
+    try {
+        const ad = await fetchAdById(adId);
+
+        if (!ad) {
+            return res.status(404).json({ message: 'Ad not found' });
+        }
+
+        res.status(200).json(ad);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error while retrieving ad details' });
+    }
+};
+
+module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd, getSingleAd };
