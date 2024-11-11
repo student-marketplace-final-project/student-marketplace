@@ -6,15 +6,15 @@ const { authenticateUser, requireAdmin, checkAdOwnership } = require('../middlew
 const router = express.Router();
 
 // Route to get all ads with optional filters and sorting
-router.get('/ads', getAllAds);
+router.get('/ads', authenticateUser, getAllAds);
 
-router.get('/ads/search', searchProducts);
+router.get('/ads/search', authenticateUser, searchProducts);
 
 // Route for getting available categories
-router.get('/categories', getCategories);
+router.get('/categories', authenticateUser, getCategories);
 
 // Route for posting an ad
-router.post('/ads', postAd);
+router.post('/ads', authenticateUser, postAd);
 
 router.put('/ads/archive/:id', authenticateUser, checkAdOwnership, archiveAd);
 

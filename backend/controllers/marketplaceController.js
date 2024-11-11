@@ -41,7 +41,7 @@ const postAd = async (req, res) => {
         const categoryId = await addCategoryData(category_type, categoryData);
 
         // Step 2: Add general ad data with the new category ID
-        const adInfo = { ...adData, category_type, category_id: categoryId };
+        const adInfo = { ...adData, user_id: req.user.userId, category_type, category_id: categoryId };
         await addAd(adInfo);
 
         res.status(201).json({ message: 'Ad posted successfully!' });
