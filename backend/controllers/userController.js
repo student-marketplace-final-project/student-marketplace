@@ -77,10 +77,26 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const activateUser = (req, res) => {
+    const userId = req.params.id;
+    const query = 'UPDATE UserDetails SET is_archived = 0 WHERE user_id = ?';
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error activating user' });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json({ message: 'User activated successfully' });
+    });
+};
+
 module.exports = {
     getUserProfile,
     updateUserProfile,
     archiveUser,
     archiveOwnUser,
-    getAllUsers
+    getAllUsers,
+    activateUser
 };

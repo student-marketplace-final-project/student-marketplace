@@ -17,6 +17,8 @@ router.put('/archive-own', authenticateUser, userController.archiveOwnUser); // 
 // marketplaceRoutes.js
 router.put('/ads/archive/:id', authenticateUser, requireOwnershipOrAdmin, marketplaceController.archiveAd); // Archive specific ad
 
+router.put('/users/activate/:id', authenticateUser, requireAdmin, userController.activateUser);
+
 router.get('/users', authenticateUser, requireAdmin, userController.getAllUsers);
 
 module.exports = router;
