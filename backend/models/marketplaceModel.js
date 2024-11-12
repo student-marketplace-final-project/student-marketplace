@@ -4,31 +4,31 @@ const db = require('../config/db');
 const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
     return new Promise((resolve, reject) => {
         let query = `
-            SELECT 
-                Ads.ad_id, 
-                Ads.title, 
-                Ads.description, 
-                Ads.price, 
-                Ads.image, 
-                Ads.created_at, 
-                Ads.location_lat, 
-                Ads.location_lon, 
+            SELECT
+                Ads.ad_id,
+                Ads.title,
+                Ads.description,
+                Ads.price,
+                Ads.image,
+                Ads.created_at,
+                Ads.location_lat,
+                Ads.location_lon,
                 Ads.category_type,
-                CASE 
+                CASE
                     WHEN Ads.category_type = 'Vehicles' THEN Vehicles.vehicle_id
                     WHEN Ads.category_type = 'Accommodation' THEN Accommodation.accommodation_id
                     WHEN Ads.category_type = 'Services' THEN Services.service_id
                     WHEN Ads.category_type = 'Electronics' THEN Electronics.electronic_id
                     WHEN Ads.category_type = 'Furniture' THEN Furniture.furniture_id
                     WHEN Ads.category_type = 'Appliances' THEN Appliances.appliance_id
-                END AS category_id
+                    END AS category_id
             FROM Ads
-            LEFT JOIN Vehicles ON Ads.category_id = Vehicles.vehicle_id AND Ads.category_type = 'Vehicles'
-            LEFT JOIN Accommodation ON Ads.category_id = Accommodation.accommodation_id AND Ads.category_type = 'Accommodation'
-            LEFT JOIN Services ON Ads.category_id = Services.service_id AND Ads.category_type = 'Services'
-            LEFT JOIN Electronics ON Ads.category_id = Electronics.electronic_id AND Ads.category_type = 'Electronics'
-            LEFT JOIN Furniture ON Ads.category_id = Furniture.furniture_id AND Ads.category_type = 'Furniture'
-            LEFT JOIN Appliances ON Ads.category_id = Appliances.appliance_id AND Ads.category_type = 'Appliances'
+                     LEFT JOIN Vehicles ON Ads.category_id = Vehicles.vehicle_id AND Ads.category_type = 'Vehicles'
+                     LEFT JOIN Accommodation ON Ads.category_id = Accommodation.accommodation_id AND Ads.category_type = 'Accommodation'
+                     LEFT JOIN Services ON Ads.category_id = Services.service_id AND Ads.category_type = 'Services'
+                     LEFT JOIN Electronics ON Ads.category_id = Electronics.electronic_id AND Ads.category_type = 'Electronics'
+                     LEFT JOIN Furniture ON Ads.category_id = Furniture.furniture_id AND Ads.category_type = 'Furniture'
+                     LEFT JOIN Appliances ON Ads.category_id = Appliances.appliance_id AND Ads.category_type = 'Appliances'
             WHERE Ads.is_archived = 0
         `;
 
@@ -36,13 +36,13 @@ const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
         let conditions = [];
         let values = [];
 
-        // Add filter for category if provided
+        // Filter by category if provided
         if (category) {
             conditions.push('Ads.category_type = ?');
             values.push(category);
         }
 
-        // Add filters for price range if provided
+        // Filter by minPrice and maxPrice if provided
         if (minPrice) {
             conditions.push('Ads.price >= ?');
             values.push(minPrice);
@@ -52,12 +52,12 @@ const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
             values.push(maxPrice);
         }
 
-        // If there are conditions, add them to the query
+        // Apply conditions to the query
         if (conditions.length > 0) {
-            query += ' WHERE ' + conditions.join(' AND ');
+            query += ' AND ' + conditions.join(' AND ');
         }
 
-        // Add sorting logic
+        // Sort by the specified option if provided
         if (sortBy) {
             if (sortBy === 'newest') {
                 query += ' ORDER BY Ads.created_at DESC';
@@ -68,30 +68,25 @@ const fetchAllAds = (category, minPrice, maxPrice, sortBy, userLocation) => {
             }
         }
 
-        // Add filter for closest items based on user location
+        // Add distance sorting if userLocation is provided
         if (userLocation) {
             const [userLat, userLon] = userLocation.split(',');
-            if (userLat && userLon && !isNaN(userLat) && !isNaN(userLon)) {
-                if (sortBy) {
-                    query += `, (POW((Ads.location_lat - ?), 2) + POW((Ads.location_lon - ?), 2)) ASC`;
-                } else {
-                    query += ` ORDER BY (POW((Ads.location_lat - ?), 2) + POW((Ads.location_lon - ?), 2)) ASC`;
-                }
+            if (!isNaN(userLat) && !isNaN(userLon)) {
+                query += sortBy ? ',' : ' ORDER BY';
+                query += ` (POW((Ads.location_lat - ?), 2) + POW((Ads.location_lon - ?), 2)) ASC`;
                 values.push(userLat, userLon);
             }
         }
 
-        // Execute the query
         db.query(query, values, (err, results) => {
             if (err) return reject(err);
 
-            // Map over the results to remove unnecessary fields
             const cleanedResults = results.map(ad => {
                 const { category_type, category_id, ...commonFields } = ad;
                 return {
                     ...commonFields,
                     category_type,
-                    category_details: { id: category_id } // This holds the relevant ID based on category_type
+                    category_details: { id: category_id }
                 };
             });
 

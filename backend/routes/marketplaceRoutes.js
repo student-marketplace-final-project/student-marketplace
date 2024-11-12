@@ -7,9 +7,9 @@ const router = express.Router();
 // Route to get all ads with optional filters and sorting
 router.get('/ads', authenticateUser, getAllAds);
 
-router.get('/ads/:id', authenticateUser, getSingleAd);
-
 router.get('/ads/search', authenticateUser, searchProducts);
+
+router.get('/ads/:id', authenticateUser, getSingleAd);
 
 // Route for getting available categories
 router.get('/categories', authenticateUser, getCategories);
