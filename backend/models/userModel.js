@@ -36,4 +36,15 @@ const findUserByEmail = (email) => {
     });
 };
 
-module.exports = { registerUser, findUserByEmail };
+const fetchAllUsers = () => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT user_id, name, email, phone_number, role, is_archived, created_at FROM UserDetails';
+
+        db.query(query, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
+module.exports = { registerUser, findUserByEmail, fetchAllUsers };

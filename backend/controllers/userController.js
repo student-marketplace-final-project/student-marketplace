@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const { fetchAllUsers } = require('../models/userModel');
 
 const getUserProfile = (req, res) => {
     const userId = req.user.userId;
@@ -67,9 +68,19 @@ const archiveOwnUser = (req, res) => {
     });
 };
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await fetchAllUsers();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error while retrieving users' });
+    }
+};
+
 module.exports = {
     getUserProfile,
     updateUserProfile,
     archiveUser,
     archiveOwnUser,
+    getAllUsers
 };
