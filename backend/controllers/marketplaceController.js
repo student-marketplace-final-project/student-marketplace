@@ -1,4 +1,4 @@
-const { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin } = require('../models/marketplaceModel');
+const { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin, activateAd } = require('../models/marketplaceModel');
 const db = require('../config/db');
 
 // Controller function to get all ads with optional filters and sorting
@@ -95,4 +95,19 @@ const getAllAdsForAdmin = async (req, res) => {
     }
 };
 
-module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd, getSingleAd, getAllAdsForAdmin };
+const activateAdByAdmin = async (req, res) => {
+    const adId = req.params.id;
+
+    try {
+        const result = await activateAd(adId);
+        res.status(200).json(result);
+    } catch (error) {
+        if (error.message === 'Ad not found') {
+            res.status(404).json({ error: 'Ad not found' });
+        } else {
+            res.status(500).json({ error: 'Server error while activating ad' });
+        }
+    }
+};
+
+module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd, getSingleAd, getAllAdsForAdmin, activateAdByAdmin };

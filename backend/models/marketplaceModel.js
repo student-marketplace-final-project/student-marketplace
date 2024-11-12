@@ -206,4 +206,20 @@ const fetchAllAdsForAdmin = () => {
     });
 };
 
-module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin };
+const activateAd = (adId) => {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE Ads SET is_archived = 0 WHERE ad_id = ?';
+
+        db.query(query, [adId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else if (results.affectedRows === 0) {
+                reject(new Error('Ad not found'));
+            } else {
+                resolve({ message: 'Ad activated successfully' });
+            }
+        });
+    });
+};
+
+module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin, activateAd };

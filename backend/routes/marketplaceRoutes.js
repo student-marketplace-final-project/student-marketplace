@@ -1,5 +1,5 @@
 const express = require('express');
-const { archiveAd, getAllAds, searchProducts, getCategories, postAd, getSingleAd, getAllAdsForAdmin } = require('../controllers/marketplaceController');
+const { archiveAd, getAllAds, searchProducts, getCategories, postAd, getSingleAd, getAllAdsForAdmin, activateAdByAdmin } = require('../controllers/marketplaceController');
 const { authenticateUser, checkAdOwnership, requireAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -21,6 +21,6 @@ router.post('/ads', authenticateUser, postAd);
 
 router.put('/ads/archive/:id', authenticateUser, checkAdOwnership, archiveAd);
 
-
+router.put('/ads/activate/:id', authenticateUser, requireAdmin, activateAdByAdmin);
 
 module.exports = router;
