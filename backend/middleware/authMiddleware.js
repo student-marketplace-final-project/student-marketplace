@@ -40,6 +40,7 @@ const checkAdOwnership = (req, res, next) => {
         }
 
         if (results.length === 0) {
+            console.log("43");
             return res.status(404).json({ error: 'Ad not found' });
         }
 

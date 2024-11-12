@@ -1,6 +1,6 @@
 const express = require('express');
-const { archiveAd, getAllAds, searchProducts, getCategories, postAd, getSingleAd } = require('../controllers/marketplaceController');
-const { authenticateUser, checkAdOwnership } = require('../middleware/authMiddleware');
+const { archiveAd, getAllAds, searchProducts, getCategories, postAd, getSingleAd, getAllAdsForAdmin } = require('../controllers/marketplaceController');
+const { authenticateUser, checkAdOwnership, requireAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -8,6 +8,8 @@ const router = express.Router();
 router.get('/ads', authenticateUser, getAllAds);
 
 router.get('/ads/search', authenticateUser, searchProducts);
+
+router.get('/ads/admin', authenticateUser, requireAdmin, getAllAdsForAdmin);
 
 router.get('/ads/:id', authenticateUser, getSingleAd);
 
@@ -18,5 +20,7 @@ router.get('/categories', authenticateUser, getCategories);
 router.post('/ads', authenticateUser, postAd);
 
 router.put('/ads/archive/:id', authenticateUser, checkAdOwnership, archiveAd);
+
+
 
 module.exports = router;

@@ -187,5 +187,23 @@ const fetchAdById = (adId) => {
     });
 };
 
+const fetchAllAdsForAdmin = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT 
+                ad_id, title, description, price, image, created_at, location_lat, location_lon, 
+                category_type, category_id, is_archived 
+            FROM Ads
+        `;
 
-module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById };
+        db.query(query, (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+};
+
+module.exports = { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin };
