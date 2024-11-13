@@ -1,7 +1,8 @@
+// Import necessary functions and database connection
 const { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin, activateAd } = require('../models/marketplaceModel');
 const db = require('../config/db');
 
-// Controller function to get all ads with optional filters and sorting
+// Retrieve all ads based on optional filters and sorting
 const getAllAds = async (req, res) => {
     const { category, minPrice, maxPrice, sortBy, userLocation } = req.query;
     try {
@@ -12,6 +13,7 @@ const getAllAds = async (req, res) => {
     }
 };
 
+// Search for products by name
 const searchProducts = async (req, res) => {
     const { searchTerm } = req.query;
     if (!searchTerm) {
@@ -26,21 +28,19 @@ const searchProducts = async (req, res) => {
     }
 };
 
-// Get available categories
+// Retrieve the list of available categories
 const getCategories = (req, res) => {
     const categories = ['Vehicles', 'Accommodation', 'Services', 'Electronics', 'Furniture', 'Appliances'];
     res.status(200).json(categories);
 };
 
-// Add a new ad
+// Post a new ad based on provided data
 const postAd = async (req, res) => {
     const { category_type, categoryData, adData } = req.body;
 
     try {
-        // Step 1: Add category-specific data
         const categoryId = await addCategoryData(category_type, categoryData);
 
-        // Step 2: Add general ad data with the new category ID
         const adInfo = { ...adData, user_id: req.user.userId, category_type, category_id: categoryId };
         await addAd(adInfo);
 
@@ -50,6 +50,7 @@ const postAd = async (req, res) => {
     }
 };
 
+// Archive an ad by setting its status to archived
 const archiveAd = (req, res) => {
     const adId = req.params.id;
     const query = 'UPDATE Ads SET is_archived = 1 WHERE ad_id = ?';
@@ -66,6 +67,7 @@ const archiveAd = (req, res) => {
     });
 };
 
+// Get details of a single ad based on its ID
 const getSingleAd = async (req, res) => {
     const adId = req.params.id;
 
@@ -83,6 +85,7 @@ const getSingleAd = async (req, res) => {
     }
 };
 
+// Retrieve all ads (active and archived) for admin view
 const getAllAdsForAdmin = async (req, res) => {
     try {
         const ads = await fetchAllAdsForAdmin();
@@ -95,6 +98,7 @@ const getAllAdsForAdmin = async (req, res) => {
     }
 };
 
+// Activate a previously archived ad by admin
 const activateAdByAdmin = async (req, res) => {
     const adId = req.params.id;
 
@@ -110,4 +114,5 @@ const activateAdByAdmin = async (req, res) => {
     }
 };
 
+// Export all controller functions for use in routes
 module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd, getSingleAd, getAllAdsForAdmin, activateAdByAdmin };

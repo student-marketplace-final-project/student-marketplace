@@ -1,22 +1,24 @@
+// Import necessary functions and database connection
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
+// Middleware for user authentication
 const authenticateUser = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1]; // Extract the token from the header
+    const token = req.header('Authorization')?.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ message: 'No token, authorization denied' });
     }
 
     try {
-        // Verify token and get user ID from the payload
-        req.user = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = jwt.verify(token, process.env.JWT_SECRET); // Decode and attach user info to req.user
         next();
     } catch (err) {
         res.status(401).json({ message: 'Token is not valid' });
     }
 };
 
+// Middleware to restrict access to admins
 const requireAdmin = (req, res, next) => {
     if (!req.user || req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Access denied: Admins only' });
@@ -24,11 +26,13 @@ const requireAdmin = (req, res, next) => {
     next();
 };
 
+// Middleware to check if the user owns the ad or is an admin
 const checkAdOwnership = (req, res, next) => {
     const adId = req.params.id;
-    const userId = req.user.userId; // Ensure `req.user` has been populated by the `authenticateUser` middleware
+    const userId = req.user.userId;
     const userRole = req.user.role;
 
+    // Allow admin access
     if (userRole === 'admin') {
         return next();
     }
@@ -53,8 +57,9 @@ const checkAdOwnership = (req, res, next) => {
     });
 };
 
+// Middleware for user ownership or admin access
 const requireOwnershipOrAdmin = (req, res, next) => {
-    const { id } = req.params; // resource ID, e.g., user or ad
+    const { id } = req.params;
     const { userId, role } = req.user;
 
     if (role === 'admin' || userId === id) {

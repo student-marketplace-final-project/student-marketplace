@@ -1,10 +1,7 @@
+// Import necessary functions
 const express = require('express');
-const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { registerUser, findUserByEmail } = require('../models/userModel');
+const { body } = require('express-validator');
 const authController = require('../controllers/authController');
-
 
 const router = express.Router();
 
