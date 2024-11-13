@@ -252,6 +252,22 @@ const activateAd = (adId) => {
     });
 };
 
+// Fetch all ads for a specific user from the database
+const fetchAdsByUserId = (userId) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT 
+                ad_id, title, description, price, image, created_at, location_lat, location_lon, category_type, is_archived
+            FROM Ads
+            WHERE user_id = ? AND is_archived = 0`;
+
+        db.query(query, [userId], (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
 // Exporting all functions for use in other parts of the application
 module.exports = {
     fetchAllAds,
@@ -260,5 +276,6 @@ module.exports = {
     addCategoryData,
     fetchAdById,
     fetchAllAdsForAdmin,
-    activateAd
+    activateAd,
+    fetchAdsByUserId
 };

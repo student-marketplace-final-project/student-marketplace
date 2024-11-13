@@ -1,30 +1,39 @@
 // Import necessary functions and database connection
-const { fetchAllAds, searchProductsByName, addAd, addCategoryData, fetchAdById, fetchAllAdsForAdmin, activateAd } = require('../models/marketplaceModel');
+const {
+    fetchAllAds,
+    searchProductsByName,
+    addAd,
+    addCategoryData,
+    fetchAdById,
+    fetchAllAdsForAdmin,
+    activateAd,
+    fetchAdsByUserId
+} = require('../models/marketplaceModel');
 const db = require('../config/db');
 
 // Retrieve all ads based on optional filters and sorting
 const getAllAds = async (req, res) => {
-    const { category, minPrice, maxPrice, sortBy, userLocation } = req.query;
+    const {category, minPrice, maxPrice, sortBy, userLocation} = req.query;
     try {
         const ads = await fetchAllAds(category, minPrice, maxPrice, sortBy, userLocation);
         res.status(200).json(ads);
     } catch (error) {
-        res.status(500).json({ message: 'Server error while retrieving ads' });
+        res.status(500).json({message: 'Server error while retrieving ads'});
     }
 };
 
 // Search for products by name
 const searchProducts = async (req, res) => {
-    const { searchTerm } = req.query;
+    const {searchTerm} = req.query;
     if (!searchTerm) {
-        return res.status(400).json({ message: 'Search term is required' });
+        return res.status(400).json({message: 'Search term is required'});
     }
 
     try {
         const products = await searchProductsByName(searchTerm);
         res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({ message: 'Server error while searching for products' });
+        res.status(500).json({message: 'Server error while searching for products'});
     }
 };
 
@@ -36,17 +45,17 @@ const getCategories = (req, res) => {
 
 // Post a new ad based on provided data
 const postAd = async (req, res) => {
-    const { category_type, categoryData, adData } = req.body;
+    const {category_type, categoryData, adData} = req.body;
 
     try {
         const categoryId = await addCategoryData(category_type, categoryData);
 
-        const adInfo = { ...adData, user_id: req.user.userId, category_type, category_id: categoryId };
+        const adInfo = {...adData, user_id: req.user.userId, category_type, category_id: categoryId};
         await addAd(adInfo);
 
-        res.status(201).json({ message: 'Ad posted successfully!' });
+        res.status(201).json({message: 'Ad posted successfully!'});
     } catch (error) {
-        res.status(500).json({ message: 'Server error while posting ad', error });
+        res.status(500).json({message: 'Server error while posting ad', error});
     }
 };
 
@@ -57,13 +66,13 @@ const archiveAd = (req, res) => {
 
     db.query(query, [adId], (err, results) => {
         if (err) {
-            return res.status(500).json({ error: 'Error archiving ad' });
+            return res.status(500).json({error: 'Error archiving ad'});
         }
         if (results.affectedRows === 0) {
             console.log("62");
-            return res.status(404).json({ error: 'Ad not found' });
+            return res.status(404).json({error: 'Ad not found'});
         }
-        res.json({ message: 'Ad archived successfully' });
+        res.json({message: 'Ad archived successfully'});
     });
 };
 
@@ -76,12 +85,12 @@ const getSingleAd = async (req, res) => {
 
         if (!ad) {
             console.log("75");
-            return res.status(404).json({ message: 'Ad not found' });
+            return res.status(404).json({message: 'Ad not found'});
         }
 
         res.status(200).json(ad);
     } catch (error) {
-        res.status(500).json({ message: 'Server error while retrieving ad details' });
+        res.status(500).json({message: 'Server error while retrieving ad details'});
     }
 };
 
@@ -94,7 +103,7 @@ const getAllAdsForAdmin = async (req, res) => {
             ads
         });
     } catch (error) {
-        res.status(500).json({ message: 'Server error while retrieving ads' });
+        res.status(500).json({message: 'Server error while retrieving ads'});
     }
 };
 
@@ -107,12 +116,34 @@ const activateAdByAdmin = async (req, res) => {
         res.status(200).json(result);
     } catch (error) {
         if (error.message === 'Ad not found') {
-            res.status(404).json({ error: 'Ad not found' });
+            res.status(404).json({error: 'Ad not found'});
         } else {
-            res.status(500).json({ error: 'Server error while activating ad' });
+            res.status(500).json({error: 'Server error while activating ad'});
         }
     }
 };
 
+// Controller to get all ads for a specific user
+const getUserAds = async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const ads = await fetchAdsByUserId(userId);
+        res.status(200).json(ads);
+    } catch (error) {
+        res.status(500).json({message: 'Server error while retrieving user ads'});
+    }
+};
+
 // Export all controller functions for use in routes
-module.exports = { getAllAds, searchProducts, getCategories, postAd, archiveAd, getSingleAd, getAllAdsForAdmin, activateAdByAdmin };
+module.exports = {
+    getAllAds,
+    searchProducts,
+    getCategories,
+    postAd,
+    archiveAd,
+    getSingleAd,
+    getAllAdsForAdmin,
+    activateAdByAdmin,
+    getUserAds
+};

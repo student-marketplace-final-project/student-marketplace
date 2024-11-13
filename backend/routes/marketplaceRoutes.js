@@ -9,7 +9,8 @@ const {
     postAd,
     getSingleAd,
     getAllAdsForAdmin,
-    activateAdByAdmin
+    activateAdByAdmin,
+    getUserAds
 } = require('../controllers/marketplaceController');
 const {authenticateUser, checkAdOwnership, requireAdmin} = require('../middleware/authMiddleware');
 
@@ -39,5 +40,8 @@ router.put('/ads/archive/:id', authenticateUser, checkAdOwnership, archiveAd);
 
 // Route to activate and archived ad by the admin (needs admin token)
 router.put('/ads/activate/:id', authenticateUser, requireAdmin, activateAdByAdmin);
+
+// Route to get all ads for a specific user
+router.get('/ads/user/:userId', authenticateUser, getUserAds);
 
 module.exports = router;
