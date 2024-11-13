@@ -34,36 +34,6 @@ CREATE TABLE Ads (
     FOREIGN KEY (user_id) REFERENCES UserDetails(user_id)
 );
 
-CREATE TABLE Comments (
-    comment_id INT AUTO_INCREMENT PRIMARY KEY,
-    ad_id INT,
-    user_id INT,
-    comment TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (ad_id) REFERENCES Ads(ad_id),
-    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id)
-);
-
-CREATE TABLE Favorites (
-    favorite_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    ad_id INT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES UserDetails(user_id),
-    FOREIGN KEY (ad_id) REFERENCES Ads(ad_id)
-);
-
-CREATE TABLE Transactions (
-    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
-    buyer_id INT,
-    ad_id INT,
-    transaction_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50),
-    FOREIGN KEY (buyer_id) REFERENCES UserDetails(user_id),
-    FOREIGN KEY (ad_id) REFERENCES Ads(ad_id)
-);
-
-
 -- Creating the child tables of Ads
 -- Creating child tables
 
@@ -113,6 +83,3 @@ CREATE TABLE Appliances (
     type VARCHAR(255) NOT NULL,
     `condition` VARCHAR(255) NOT NULL
 );
-
--- Alter the existing table to update the datatype
--- ALTER TABLE Ads MODIFY COLUMN image LONGTEXT;
