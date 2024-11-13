@@ -25,6 +25,9 @@ router.get('/ads/search', authenticateUser, searchProducts);
 // Route to get all active and archived ads for the admin panel
 router.get('/ads/admin', authenticateUser, requireAdmin, getAllAdsForAdmin);
 
+// Route to get all ads for a specific user
+router.get('/ads/user', authenticateUser, getUserAds);
+
 // Route to get a single Ad's data (needs user token)
 router.get('/ads/:id', authenticateUser, getSingleAd);
 
@@ -40,8 +43,5 @@ router.put('/ads/archive/:id', authenticateUser, checkAdOwnership, archiveAd);
 
 // Route to activate and archived ad by the admin (needs admin token)
 router.put('/ads/activate/:id', authenticateUser, requireAdmin, activateAdByAdmin);
-
-// Route to get all ads for a specific user
-router.get('/ads/user/:userId', authenticateUser, getUserAds);
 
 module.exports = router;

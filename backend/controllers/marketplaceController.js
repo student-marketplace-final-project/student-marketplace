@@ -125,13 +125,13 @@ const activateAdByAdmin = async (req, res) => {
 
 // Controller to get all ads for a specific user
 const getUserAds = async (req, res) => {
-    const userId = req.params.userId;
+    const userId = req.user.userId; // Extract user ID from the token payload
 
     try {
         const ads = await fetchAdsByUserId(userId);
         res.status(200).json(ads);
     } catch (error) {
-        res.status(500).json({message: 'Server error while retrieving user ads'});
+        res.status(500).json({ message: 'Server error while retrieving user ads' });
     }
 };
 
