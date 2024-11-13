@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardBody, CardHeader, Label, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Label, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button, CardFooter } from 'reactstrap';
 import './profile.css';
 import * as Yup from "yup";
 
@@ -9,9 +9,14 @@ import HeaderFile from '../../../components/Custom/header';
 import CustomButton from '../../../components/Custom/Button';
 import CustomInput from "../../../components/Custom/Auth/textinput"
 import { placeholderConst as PLACEHOLDER_CONST } from '../../../components/Constants/placeholder';
+import { getProfileData, updateProfile } from '../../../Services/dashboardServices';
+import {
+    NotificationManager,
+    NotificationContainer,
+} from "react-notifications";
 
 const UserProfile = () => {
-    const [activeTab, setActiveTab] = useState('active');
+ 
     const [listings, setListings] = useState([]);
     const [editModal, setEditModal] = useState(false);
     const [initialValues, setInitialValues] = useState({
@@ -36,19 +41,62 @@ const UserProfile = () => {
             { id: 5, title: 'ZU SHOES', location: 'Rockdale, NSW', price: '$5', image: uonlogo },
             { id: 6, title: 'ZU SHOES', location: 'Rockdale, NSW', price: '$5', image: uonlogo },
         ]);
+
+        getProfileData().then((response) => {
+            console.log("-----> get all ads data", response.data)
+            const data = response.data;
+            setInitialValues({
+                name: data.name,
+                email: data.email,
+                address: data.address,
+                contact: data.phone_number,
+            })
+
+        })
+            .catch((err) => { });
     }, []);
 
-    const editProfileSchema = Yup.object().shape({
-        apiKey: Yup.string()
-          .required("API key is required")
-          .max(128, "API key must be at most 128 characters")
-          .min(16, "API key must be at least 20 characters"),
-        totalRequest: Yup.string()
-          .required("Total request value is required"),
-        serviceProvider: Yup.string().required("Service provider name is required"),
-      });
 
 
+    const handleSubmit = (values, { setFieldError, resetForm }) => {
+        console.log("profile handle submit===", values)
+        const data ={
+                name: values.name, 
+                address: values.address, 
+                phone_number: values.contact, 
+                email: values.email, 
+                is_student: true ,
+                password:values.password
+        }
+
+        updateProfile(data).then((response) => {
+            console.log("-->rsponse", response.data)
+
+            NotificationManager.success("Profile updated Successfully");
+            getProfileData().then((response) => {
+                console.log("-----> get all ads data", response.data)
+                const data = response.data;
+                setInitialValues({
+                    name: data.name,
+                    email: data.email,
+                    address: data.address,
+                    contact: data.phone_number,
+                })
+
+            })
+                .catch((err) => { });
+            setEditModal(false)
+        })
+            .catch((error) => {
+                const errData =
+                    error && error.data && error.data.message;
+                if (errData === "Invalid email or password") {
+                    NotificationManager.error("Invalid email or password", "", 404);
+                } else if (errData === "Server error") {
+                    NotificationManager.error("Server Error", "", 500);
+                }
+            });
+    }
 
     return (
         <React.Fragment>
@@ -57,11 +105,16 @@ const UserProfile = () => {
                 <Row>
                     <Col xs="4" >
                         <Card className='profilecard'>
-                            <CardHeader className='profileheader'>
-                                <img
-                                    className="avatar"
-                                    alt="Sample"
-                                    src="https://picsum.photos/300/200" />
+
+                            <CardBody className='cardbody'>
+                                <h2 className='name'>{initialValues.name}</h2>
+                                <div>
+                                    <label className='Top-label'>Email Address : </label><label className='desc-label'> {initialValues.email}</label><br />
+                                    <label className='Top-label'>Contact No. : </label> <label className='desc-label'> {initialValues.contact}</label><br />
+                                    <label className='Top-label'>Address : </label><label className='desc-label'> {initialValues.address}</label>
+                                </div>
+                            </CardBody>
+                            <CardFooter>
                                 <Button className="editbtn" type="submit"
                                     name="btn" onClick={toggleEditModal}
                                     data-toggle="modal">
@@ -80,8 +133,17 @@ const UserProfile = () => {
                                     <ModalBody>
                                         <div>
                                             <Formik
-                                                initialValues={initialValues}
-                                                validationSchema={editProfileSchema}
+                                                initialValues={{
+                                                    name: initialValues.name,
+                                                    email: initialValues.email,
+                                                    address: initialValues.address,
+                                                    contact: initialValues.phone_number,
+                                                    password: initialValues.password,
+
+                                                }}
+                                                //validationSchema={editProfileSchema}
+                                                enableReinitialize
+                                                onSubmit={handleSubmit}
                                             >
                                                 {({ errors, touched, values, handleChange }) => (
                                                     <Form>
@@ -93,6 +155,8 @@ const UserProfile = () => {
                                                             name="name"
                                                             touched={touched}
                                                             errors={errors}
+                                                            handleChange={handleChange}
+                                                            defaultValue={initialValues.name}
                                                             iconname={"ri-user-line"}
                                                         ></CustomInput>
                                                         <Label className="Top-label">Email Address</Label>
@@ -103,6 +167,8 @@ const UserProfile = () => {
                                                             name="email"
                                                             touched={touched}
                                                             errors={errors}
+                                                            handleChange={handleChange}
+                                                            defaultValue={initialValues.email}
                                                             iconname="ri-mail-line"
                                                         ></CustomInput>
                                                         <Label className="Top-label">Address</Label>
@@ -114,6 +180,8 @@ const UserProfile = () => {
                                                             name="address"
                                                             touched={touched}
                                                             errors={errors}
+                                                            handleChange={handleChange}
+                                                            defaultValue={initialValues.address}
                                                             iconname="ri-home-2-line"
                                                         ></CustomInput>
                                                         <Label className="Top-label">Contact Number</Label>
@@ -122,9 +190,10 @@ const UserProfile = () => {
                                                             values={values}
                                                             placeholder={PLACEHOLDER_CONST.ENTER_PHONENUMBER}
                                                             name="contact"
-
+                                                            handleChange={handleChange}
                                                             touched={touched}
                                                             errors={errors}
+                                                            defaultValue={initialValues.contact}
                                                             iconname="ri-phone-line"
                                                         ></CustomInput>
 
@@ -134,14 +203,23 @@ const UserProfile = () => {
                                                             values={values}
                                                             placeholder={PLACEHOLDER_CONST.ENTER_PASSWORD}
                                                             name="password"
-
+                                                            handleChange={handleChange}
                                                             touched={touched}
                                                             errors={errors}
                                                             iconname="ri-lock-2-line"
                                                             isPassword
                                                         ></CustomInput>
 
-
+                                                        <div className="text-center">
+                                                            <Button
+                                                                type="submit"
+                                                                name="btn"
+                                                                className="custom-btn"
+                                                                onSubmit={(values) => handleSubmit(values)}
+                                                            >
+                                                                Edit
+                                                            </Button>
+                                                        </div>
 
                                                     </Form>
                                                 )}
@@ -157,35 +235,16 @@ const UserProfile = () => {
                                         >
                                             Close
                                         </Button>
-                                        <Button
-                                            type="submit"
-                                            name="btn"
-                                            className="custom-btn"
 
-                                        >
-                                            Edit
-                                        </Button>
                                     </ModalFooter>
                                 </Modal>
-
-                            </CardHeader>
-                            <CardBody className='cardbody'>
-                                <h2 className='name'>Dhara Bhadani</h2>
-                                <div>
-                                    <label className='Top-label'>Email Address : </label><label className='desc-label'> dharabhadani@gmail.com</label><br />
-                                    <label className='Top-label'>Contact No. : </label> <label className='desc-label'> 0987654321</label><br />
-                                    <label className='Top-label'>Address : </label><label className='desc-label'> Sydney, Australia </label>
-                                </div>
-                            </CardBody>
+                            </CardFooter>
                         </Card>
                     </Col>
                     <Col xs="8" className='col2'>
                         <Card className='list-card'>
                             <CardBody>
-                                <div className="tabs">
-                                    <button onClick={() => setActiveTab('active')} className={activeTab === 'active' ? 'active' : ''}>Active listings</button>
-                                    <button onClick={() => setActiveTab('sold')} className={activeTab === 'sold' ? 'active' : ''}>Recently sold</button>
-                                </div>
+
                                 <div className="listings">
                                     {listings.map(listing => (
                                         <div key={listing.id} className="listing-card">
@@ -204,6 +263,7 @@ const UserProfile = () => {
                     </Col>
                 </Row>
             </div>
+            <NotificationContainer />
         </React.Fragment>
     );
 };

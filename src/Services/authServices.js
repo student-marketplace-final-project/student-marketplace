@@ -53,7 +53,7 @@ export const verifyByOtp = (data) => {
 export const authForgot = (data) => {
   return new Promise(async (resolve, reject) => {
     return api
-      .getWithParams(url.FORGOT_PASSWORD_URL + data)
+      .post(url.FORGOT_PASSWORD_URL,data)
       .then((response) => {
         if (response) {
           resolve(response);
@@ -66,10 +66,10 @@ export const authForgot = (data) => {
 };
 
 //User  ResetPassword API
-export const authReset = (data) => {
+export const authReset = (token,data) => {
   return new Promise(async (resolve, reject) => {
     return api
-      .post(url.RESET_PASSWORD_URL, data)
+      .post(url.RESET_PASSWORD_URL + token, data)
       .then((response) => {
         if (response) {
           resolve(response);

@@ -8,7 +8,7 @@ import "./product.css"
 const CategoryModal = () => {
   // Categories data
   const categories = [
-    { name: 'Vehicles', icon: 'ri-car-line', path: '/addform' },
+    { name: 'Vehicles', icon: 'ri-car-line', path: '/vehical' },
     { name: 'Accommodation', icon: 'ri-caravan-line', path: '/accommodation' },
     { name: 'Services', icon: 'ri-e-bike-2-line', path: '/services' },
     { name: 'Electronics', icon: 'fa-laptop', path: '/electronics' },

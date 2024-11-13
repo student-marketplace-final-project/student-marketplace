@@ -127,9 +127,10 @@
 }
 .port-img {
   border-radius: 50%;
-  /* box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.15); */
-  width: 280px;
-  height: 280px;
+  box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.15); 
+  width:50% ;
+  height: 50%;
+  display: flex;
 }
 
 .port-name {
@@ -174,4 +175,44 @@
 }
 .usersetting{
   font-size: 50px;
+}
+
+/* Style for the dropdown container */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style for the icon button (you can customize the size, color, etc.) */
+.dropdown-toggle {
+  font-size: 24px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  outline: none;
+}
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 30px;  /* Adjust as needed */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 150px;
+  z-index: 100;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
 }

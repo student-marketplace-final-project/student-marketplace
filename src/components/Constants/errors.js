@@ -13,17 +13,21 @@ export const errorsConst = {
 
 
   //Add Product Error List
+  IMAGE:"Please select an image",
   VEHICAL_MAKE: "Enter vehical make",
   VEHICAL_MODEL: "Enter model name",
-  VEHICAL_YEAR:"Select year",
+  VEHICAL_YEAR:"Enter year",
   VEHICAL_VARIENT:"Enter varient",
   TITLE:"Enter title",
   ODOMETER:"Enter odometer",
+  PHONE_NUMBER:"Enter phone number",
   VIN:"Enter 17 characters identification number unique to your vehical",
   REGISTRATION_NUMBER:"Enter valid registration number",
   REGISTRATION_STATE:"Enter registration state",
   REGISTRATION_EXPIRY:"Enter registration expiry date",
   DESCRIPTION:"Enter description",
+  PROVIDER:"Enter provider name",
+  OPENING_HOURS:"Enter opening hours",
   CONDITION:"Enter Condition",
   PRICE:"Enter your price",
   TYPE:"Enter Type",
@@ -33,5 +37,7 @@ export const errorsConst = {
   PARKING:"Select availabilty of parking facilities",
   SMOKING:"Select smoking zone",
   FURNISHED:"Is your accomodation furnished?",
-  PETS:"Is your place pets friendly?"
+  PETS:"Is your place pets friendly?",
+  BRAND:"Enter brand name",
+  MODEL:"Enter model name"
 };

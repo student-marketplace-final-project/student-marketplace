@@ -1,50 +1,45 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import { Card, CardBody, Col, Row } from "reactstrap";
 import * as Yup from 'yup';
 import "./product.css"
 import HeaderFile from '../../../components/Custom/header';
 import CustomInput from '../../../components/Custom/User/Textinput';
 import Button from '../../../components/Custom/Button';
 import { errorsConst as ERROR_CONST } from "../../../components/Constants/errors";
-import Dropzone from "react-dropzone";
-import { Link } from "react-router-dom";
+import { postAdsData } from '../../../Services/dashboardServices';
+import {
+    NotificationManager,
+    NotificationContainer,
+} from "react-notifications";
 
-
-const Accommodation = () => {
+const Accommodation = (props) => {
 
     // State to hold the selected option
     const [selectedParking, setSelectedParking] = useState("parking_yes");
     const [selectedSmoking, setSelectedSmoking] = useState("smoking_yes");
     const [selectedFurnished, setSelectedFurnished] = useState("furnished_yes");
     const [selectedPets, setSelectedPets] = useState("pets_yes");
-    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const [imageBase64, setImageBase64] = useState('');
+
     const [initialValues, setInitialValues] = useState({
         title: '', type: '', price: '', availableDate: '', no_of_bedrooms: '',
-        no_of_bathrooms: '', parking: '', smoking: '',
-        furnished: '', pets: '',
-        description: ''
+        no_of_bathrooms: '', parking: true, smoking: true,
+        furnished: true, pets: true,
+        description: '', phone_number: ''
     });
 
-    const formatBytes = (bytes, decimals = 2) => {
-        if (bytes === 0) return "0 Bytes";
-        const k = 1024;
-        const dm = decimals < 0 ? 0 : decimals;
-        const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0]; // Get the uploaded file
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageBase64(reader.result); // Save Base64 string to state
+            };
+            reader.readAsDataURL(file); // Convert image to Base64
+        }
     };
 
-    const handleAcceptedFiles = useCallback(files => {
-        const mappedFiles = files.map(file =>
-            Object.assign(file, {
-                preview: URL.createObjectURL(file),
-                formattedSize: formatBytes(file.size),
-            })
-        );
-        setSelectedFiles(mappedFiles);
-    }, []);
 
     // Yup validation schema
     const validationSchema = Yup.object({
@@ -59,6 +54,7 @@ const Accommodation = () => {
         furnished: Yup.string().required(ERROR_CONST.FURNISHED),
         pets: Yup.string().required(ERROR_CONST.PETS),
         description: Yup.string().required(ERROR_CONST.DESCRIPTION),
+        phone_number:Yup.number().required(ERROR_CONST.PHONE_NUMBER)
 
     });
 
@@ -80,6 +76,45 @@ const Accommodation = () => {
     // Handle form submission
     const handleSubmit = (values) => {
         console.log("Form Data Submitted:", values);
+
+        const data = {
+            category_type: "Accommodation",
+            categoryData: {
+                bedrooms: values.no_of_bedrooms,
+                bathrooms: values.no_of_bathrooms,
+                available_date: values.availableDate,
+                parking: values.parking,
+                smoking: values.smoking,
+                furnished: values.furnished,
+                pets: values.pets,
+                type: values.type
+            },
+            adData: {
+                title: values.title,
+                description: values.description,
+                price: values.price,
+                image: imageBase64,
+                phone_number: values.phone_number,
+                location_lat: 35.712776,
+                location_lon: -74.005974
+            }
+        }
+
+      
+
+        postAdsData(data)
+            .then((response) => {
+              
+               props.history.push('/dashboard');
+            })
+            .catch((error) => {
+                console.log("=====>error", error)
+                const errData =
+                    error && error.data && error.data.message;
+                if (errData === "Invalid email or password") {
+                    NotificationManager.error("Invalid email or password", "", 400);
+                }
+            });
         // Navigate to home page after submission
     };
 
@@ -124,7 +159,7 @@ const Accommodation = () => {
                                         />
                                         <label className="Top-label">Price*</label>
                                         <CustomInput
-                                            type='text'
+                                            type='number'
                                             name='price'
                                             values={values}
                                             errors={errors}
@@ -135,7 +170,7 @@ const Accommodation = () => {
 
                                         <label className="Top-label">Available Date*</label>
                                         <CustomInput
-                                            type='text'
+                                            type='date'
                                             name='availableDate'
                                             values={values}
                                             errors={errors}
@@ -145,7 +180,7 @@ const Accommodation = () => {
                                         />
                                         <label className="Top-label">Number of Bedrooms*</label>
                                         <CustomInput
-                                            type='text'
+                                            type='number'
                                             name='no_of_bedrooms'
                                             values={values}
                                             errors={errors}
@@ -155,7 +190,7 @@ const Accommodation = () => {
                                         />
                                         <label className="Top-label">Number of Bathrooms*</label>
                                         <CustomInput
-                                            type='text'
+                                            type='number'
                                             name='no_of_bathrooms'
                                             values={values}
                                             errors={errors}
@@ -276,57 +311,12 @@ const Accommodation = () => {
                                         </div>
 
                                         <label className="Top-label">Upload pictures here*</label>
+                                        <input type="file" name="image" accept="image/*" onChange={handleImageUpload} style={{ margin: "10px" }} /><br />
+                                        {!imageBase64 ? (
+                                            <div style={{ color: "red", marginLeft: "10px" }}>Please select an image</div>
+                                        ) : null}
+                                        {imageBase64 && <img src={imageBase64} alt="Preview" style={{ maxWidth: '200px', margin: "10px" }} />}<br />
 
-                                        <Card>
-                                            <CardBody>
-
-                                                <Form>
-                                                    <Dropzone onDrop={handleAcceptedFiles}>
-                                                        {({ getRootProps, getInputProps }) => (
-                                                            <div className="dropzone">
-                                                                <div className="dz-message needsclick mt-2" {...getRootProps()}>
-                                                                    <input {...getInputProps()} />
-                                                                    <div className="mb-3">
-                                                                        <i className="display-4 text-muted ri-upload-cloud-2-line"></i>
-                                                                    </div>
-                                                                    <h4>Drop files here or click to upload.</h4>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </Dropzone>
-                                                    <div className="dropzone-previews mt-3" id="file-previews">
-                                                        {selectedFiles.map((f, i) => (
-                                                            <Card
-                                                                className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
-                                                                key={i + "-file"}
-                                                            >
-                                                                <div className="p-2">
-                                                                    <Row className="align-items-center">
-                                                                        <Col className="col-auto">
-                                                                            <img
-                                                                                data-dz-thumbnail=""
-                                                                                height="80"
-                                                                                className="avatar-sm rounded bg-light"
-                                                                                alt={f.name}
-                                                                                src={f.preview}
-                                                                            />
-                                                                        </Col>
-                                                                        <Col>
-                                                                            <Link to="#" className="text-muted font-weight-bold">
-                                                                                {f.name}
-                                                                            </Link>
-                                                                            <p className="mb-0">
-                                                                                <strong>{f.formattedSize}</strong>
-                                                                            </p>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </div>
-                                                            </Card>
-                                                        ))}
-                                                    </div>
-                                                </Form>
-                                            </CardBody>
-                                        </Card>
 
                                         <label className="Top-label">Describe your place*</label>
                                         <CustomInput
@@ -337,6 +327,16 @@ const Accommodation = () => {
                                             touched={touched}
                                             handleChange={handleChange}
                                             placeholder={"Enter description"}
+                                        />
+                                        <label className="Top-label">Contact Details*</label>
+                                        <CustomInput
+                                            type='text'
+                                            name='phone_number'
+                                            values={values}
+                                            errors={errors}
+                                            touched={touched}
+                                            handleChange={handleChange}
+                                            placeholder={"Enter contact number"}
                                         />
 
                                         <div className="text-center">
@@ -357,6 +357,7 @@ const Accommodation = () => {
                     </div>
                 </div>
             </div>
+            <NotificationContainer />
         </React.Fragment>
     );
 };

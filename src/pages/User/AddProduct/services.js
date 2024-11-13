@@ -13,10 +13,16 @@ import {
 } from "react-notifications";
 import { postAdsData } from '../../../Services/dashboardServices';
 
-const Electronics = (props) => {
-  console.log("===props====", props)
+const Services = (props) => {
+
   const [initialValues, setInitialValues] = useState({
-    title: '', type: '', description: '', brand: '', model: '', condition: '', price: '', image: '', phone_number: ''
+    title: '',
+    provider: '',
+    opening_hours: "",
+    price: '',
+    image: '',
+    description: '',
+    phone_number: ''
   });
   const [imageBase64, setImageBase64] = useState('');
 
@@ -34,28 +40,20 @@ const Electronics = (props) => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required(ERROR_CONST.TITLE),
-    type: Yup.string().required(ERROR_CONST.TYPE),
     price: Yup.string().required(ERROR_CONST.PRICE),
-    condition: Yup.string().required(ERROR_CONST.TITLE),
     description: Yup.string().required(ERROR_CONST.DESCRIPTION),
-    brand: Yup.string().required(ERROR_CONST.BRAND),
-    model: Yup.string().required(ERROR_CONST.MODEL),
-    phone_number: Yup.string().required(ERROR_CONST.PHONE_NUMBER),
-
-
-
-
+    provider:Yup.string().required(ERROR_CONST.PROVIDER),
+    opening_hours:Yup.string().required(ERROR_CONST.OPENING_HOURS),
+    phone_number:Yup.string().required(ERROR_CONST.PHONE_NUMBER)
   });
   // Handle form submission
   const handleSubmit = (values) => {
-    console.log("Form Data Submitted:", values);
+    console.log("Form Data Submitted:==>", values);
     const data = {
-      category_type: "Electronics",
+      category_type: "Services",
       categoryData: {
-        brand: values.brand,
-        model: values.model,
-        "`condition`": values.condition,
-        type: values.type
+        provider: values.provider,
+        opening_hours: "9:00 AM - 6:00 PM"
       },
       adData: {
         title: values.title,
@@ -68,11 +66,10 @@ const Electronics = (props) => {
       }
     }
 
-
+  
     postAdsData(data)
       .then((response) => {
-
-        props.history.push('/dashboard');
+      props.history.push('/dashboard');
       })
       .catch((error) => {
         console.log("=====>error", error)
@@ -94,7 +91,7 @@ const Electronics = (props) => {
           <div className="col-md-12 col-lg-4 bg-white rounded">
             <div className="innerContent">
 
-              <h2>Electronics</h2>
+              <h2>Services</h2>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -115,47 +112,28 @@ const Electronics = (props) => {
                       />
 
                     </div>
-                    <label className="Top-label">Type*</label>
+                    <label className="Top-label">Provider*</label>
                     <CustomInput
                       type='text'
-                      name='type'
+                      name='provider'
                       values={values}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
+                      placeholder={'Enter provider'}
+                    />
+                    <label className="Top-label">Enter opening hours of service*</label>
+                    <CustomInput
+                      type='text'
+                      name='opening_hours'
+                      values={values}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange}
+                      placeholder={'Enter opening hours'}
+                    />
 
-                      placeholder={'Enter type'}
-                    />
-                    <label className="Top-label">Brand*</label>
-                    <CustomInput
-                      type='text'
-                      name='brand'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Brand'}
-                    />
-                    <label className="Top-label">Model*</label>
-                    <CustomInput
-                      type='text'
-                      name='model'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter model'}
-                    />
-                    <label className="Top-label">Condition*</label>
-                    <CustomInput
-                      type='text'
-                      name='condition'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Describe items condition'}
-                    />
+
                     <label className="Top-label">Price*</label>
                     <CustomInput
                       type='number'
@@ -169,6 +147,9 @@ const Electronics = (props) => {
 
                     <label className="Top-label">Upload pictures here*</label>
                     <input type="file" name="image" accept="image/*" onChange={handleImageUpload} style={{ margin: "10px" }} /><br />
+                    {!imageBase64 ? (
+                      <div style={{ color: "red", marginLeft: "10px" }}>Please select an image</div>
+                    ) : null}
                     {imageBase64 && <img src={imageBase64} alt="Preview" style={{ maxWidth: '200px', margin: "10px" }} />}<br />
 
 
@@ -180,7 +161,8 @@ const Electronics = (props) => {
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
-                      placeholder={"Enter Description"}
+                      placeholder={"Enter description of your service"}
+
                     />
                     <label className="Top-label">Contact Number*</label>
                     <CustomInput
@@ -216,4 +198,4 @@ const Electronics = (props) => {
   );
 };
 
-export default Electronics;
+export default Services;

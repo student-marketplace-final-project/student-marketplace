@@ -1,5 +1,5 @@
 // CarDetailsPage.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './productDescription.css';
@@ -8,11 +8,16 @@ import HeaderFile from '../../../components/Custom/header';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 
-const ProductDescription = () => {
+const ProductDescription = (props) => {
     const images = [
         uonlogo, uonlogo, uonlogo, uonlogo
         // Add all image URLs here
     ];
+    useEffect=(()=>{
+const id = props.location.pathname;
+ 
+    },[]);
+    console.log("---> product page",props.location.pathname)
 
     return (
         <React.Fragment>
@@ -52,10 +57,7 @@ const ProductDescription = () => {
                             <Card>
                                 <CardBody>
                                     <h3>Seller Information</h3>
-                                    <img
-                                        className="avatar"
-                                        alt="Sample"
-                                        src="https://picsum.photos/300/200" />
+                                    
                                     <h4>Dhara Bhadani</h4>
                                     <h3>Contact Information: <span>0987654322</span></h3>
                                 </CardBody>

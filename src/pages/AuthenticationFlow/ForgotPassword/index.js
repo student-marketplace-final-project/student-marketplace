@@ -33,7 +33,10 @@ class ForgotPassword extends Component {
 
   handleSubmit = (values, { resetForm }) => {
     console.log("----> forgot password",values);
-    authForgot(values.email)
+    const body = {
+      email: values.email
+    };
+    authForgot(body)
       .then(() => {
         resetForm();
         NotificationManager.success("Password reset email sent", "", 700);

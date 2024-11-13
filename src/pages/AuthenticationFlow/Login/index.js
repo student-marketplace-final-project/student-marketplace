@@ -10,7 +10,7 @@ import { placeholderConst as PLACEHOLDER_CONST } from "../../../components/Const
 import { authLogin } from "../../../Services/authServices";
 
 import {
-  NotificationContainer,
+  NotificationContainer,NotificationManager
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import * as Yup from "yup";
@@ -59,26 +59,19 @@ class Login extends Component {
       email: values.email,
       password: values.password,
     };
-    //this.props.history.push("/usage");
-
     authLogin(body)
       .then((response) => {
-        console.log("->>>login response",response)
-        //localStorage.setItem("A##KEY", response.data.data.data.accessToken);
-        // NotificationManager.success("Login Successfully");
-        this.props.history.push("/usage");
+        console.log("-->token",response.data)
+        localStorage.setItem("A##KEY", response.data.token);
+        this.props.history.push('/dashboard');
       })
       .catch((error) => {
         const errData =
-          error && error.data && error.data.error && error.data.error.message;
-        if (errData === "err_13") {
-          //NotificationManager.error("Invalid email or password", "", 700);
-        } else if (errData === "err_7") {
-          //NotificationManager.error("Invalid email address", "", 700);
-        } else if (errData === "err_12") {
-          localStorage.setItem("Email", values.email);
-          //this.props.history.push("/verification");
-        
+          error && error.data && error.data.message;
+        if (errData === "Invalid email or password") {
+          NotificationManager.error("Invalid email or password", "", 400);
+        } else if (errData === "Server error") {
+          NotificationManager.error("Server Error", "", 500);
         } 
       });
   };
@@ -135,7 +128,7 @@ class Login extends Component {
                           type="submit"
                           name="btn"
                           className="custom-btn"
-                        //onSubmit={(values) => this.handlesubmit(values)}
+                        onSubmit={(values) => this.handlesubmit(values)}
                         >
                           Login
                         </Button>
