@@ -176,12 +176,18 @@ const fetchAdById = (adId) => {
                                                                                  'parking', Accommodation.parking,
                                                                                  'smoking', Accommodation.smoking,
                                                                                  'furnished', Accommodation.furnished,
-                                                                                 'pets', Accommodation.pets)
-                       WHEN Ads.category_type = 'Services' THEN JSON_OBJECT('opening_hours', Services.opening_hours)
+                                                                                 'pets', Accommodation.pets,
+                                                                                 'bedrooms', Accommodation.bedrooms,
+                                                                                 'bathrooms', Accommodation.bathrooms)
+                       WHEN Ads.category_type = 'Services' THEN JSON_OBJECT('opening_hours', Services.opening_hours,
+                                                                            'provider', Services.provider)
                        WHEN Ads.category_type = 'Electronics' THEN JSON_OBJECT('brand', Electronics.brand, 'condition',
-                                                                               Electronics.condition)
+                                                                               Electronics.condition, 'type',
+                                                                               Electronics.type, 'model',
+                                                                               Electronics.model)
                        WHEN Ads.category_type = 'Furniture' THEN JSON_OBJECT('material', Furniture.material,
-                                                                             'condition', Furniture.condition)
+                                                                             'condition', Furniture.condition, 'type',
+                                                                             Furniture.type)
                        WHEN Ads.category_type = 'Appliances' THEN JSON_OBJECT('type', Appliances.type, 'condition',
                                                                               Appliances.condition)
                        ELSE NULL
@@ -256,10 +262,19 @@ const activateAd = (adId) => {
 const fetchAdsByUserId = (userId) => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT 
-                ad_id, title, description, price, image, created_at, location_lat, location_lon, category_type, is_archived
+            SELECT ad_id,
+                   title,
+                   description,
+                   price,
+                   image,
+                   created_at,
+                   location_lat,
+                   location_lon,
+                   category_type,
+                   is_archived
             FROM Ads
-            WHERE user_id = ? AND is_archived = 0`;
+            WHERE user_id = ?
+              AND is_archived = 0`;
 
         db.query(query, [userId], (err, results) => {
             if (err) return reject(err);
