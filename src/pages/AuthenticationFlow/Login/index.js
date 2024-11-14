@@ -63,7 +63,8 @@ class Login extends Component {
       .then((response) => {
         console.log("-->token",response.data)
         localStorage.setItem("A##KEY", response.data.token);
-        this.props.history.push('/dashboard');
+        localStorage.setItem("role", response.data.role);
+        this.props.history.push('/user-dashboard');
       })
       .catch((error) => {
         const errData =
@@ -76,7 +77,9 @@ class Login extends Component {
       });
   };
 
+
   render() {
+
     const { initialValues } = this.state;
     return (
       <React.Fragment>

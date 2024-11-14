@@ -9,8 +9,8 @@ import Resetpwd from "../pages/AuthenticationFlow/ResetPassword";
 import Activation from "../pages/AuthenticationFlow/Registration/activation";
 import Loader from "../components/Custom/customLoader";
 import UserDashboard from "../pages/User/UserDashboard/index"
-
-
+import Dashboard from "../pages/User/UserDashboard/userDashboard"
+import AdminDashboard from "../components/Admin/AdminDashboard";
 
 // Dashboard
 import Modal from "../pages/User/AddProduct/model"
@@ -39,7 +39,7 @@ const authProtectedRoutes = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/dashboard" />,
+    component: () => <Redirect to="/user-dasboard" />,
   },
 ];
 
@@ -55,6 +55,9 @@ const publicRoutes = [
   { path: "/verification", component: ResendVerification },
   //user dashboard
   { path: "/dashboard", component: UserDashboard },
+
+  //admin dasnoard
+  {path:"/admin",component:AdminDashboard},
   //product base page
   { path: "/product", component: Product },
 
@@ -81,6 +84,7 @@ const publicRoutes = [
 
   //product description page
   { path: "/productDescription", component: ProductDescription },
+  {path:"/user-dashboard" ,component:Dashboard},
 
   //error pages
   { path: "/pages-404", component: Error404 },

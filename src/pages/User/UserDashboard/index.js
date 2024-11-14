@@ -51,7 +51,7 @@ class UserDashboard extends Component {
     this.props.history.push(`/product/${this.props.history}`);
   };
   render() {
-    console.log("----profiledataa--==>",this.state.userDetail)
+    { console.log(localStorage.getItem("role"))}
     const { userDetail } = this.state;
     return (
       <React.Fragment>
