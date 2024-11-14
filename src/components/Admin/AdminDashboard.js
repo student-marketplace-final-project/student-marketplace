@@ -4,8 +4,6 @@ import AdManagement from './AdManagement';
 import uonlogo from "../../assets/images/uon-logo-square.png";
 import SweetAlert from "react-bootstrap-sweetalert";
 
-
-
 const AdminDashboard = () => {
     const [logoutModal, setLogoutModal] = useState(false);
     const logoutAdminModal = () => {

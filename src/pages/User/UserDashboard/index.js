@@ -29,6 +29,10 @@ class UserDashboard extends Component {
     this.setState({ isLoading: false });
   }
 
+  searchFunction=(value)=>{
+    console.log("input value",value)
+this.setState({search: value})
+  }
   componentDidMount = () => {
     this.startLoading();
     getAllAds()
@@ -62,7 +66,11 @@ class UserDashboard extends Component {
               <Col className="search-board">
                 <div className="search-box ml-2">
                   <div className="position-relative">
-                    <Input type="text" className="form-control rounded" placeholder="I'm looking for....." />
+                    <Input type="text" 
+                    className="form-control rounded" 
+                    placeholder="I'm looking for....." 
+                    onChange={(e) => this.searchFunction(e.target.value)}
+                    />
                     <i className="mdi mdi-magnify search-icon"></i>
                     <Button>
                       Search

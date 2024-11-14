@@ -82,7 +82,6 @@ class HeaderFile extends Component {
               </div>
             </div>
             <div className="d-flex custom-btn"  >
-
               <Button style={{ backgroundColor: "black", textDecorationColor: "white", width: 100 }} onClick={(values) => this.handleSubmit(values)} >{"Post Ad"}</Button>
               <Link to="/profile">
                 <i class="ri-user-settings-fill" style={{ fontSize: "35px", color: "#fff", padding: "20px", backgroundColor: "#007db7" }}></i>

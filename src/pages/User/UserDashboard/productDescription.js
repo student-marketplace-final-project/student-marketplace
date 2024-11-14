@@ -15,7 +15,7 @@ const ProductDescription = (props) => {
 
     useEffect(() => {
       switch (props.location.state.listing.category_type) {
-        case "Vehicals":
+        case "Vehicles":
             setHeading("Vehicle Details");
             break;
         case "Accommodation":
@@ -42,7 +42,7 @@ const ProductDescription = (props) => {
       }, []);
 
     
-    console.log("----state---", categoryData)
+    console.log("----state---", props.location.state.listing.category_type)
     return (
         <React.Fragment>
             <HeaderFile props={props} />
@@ -87,19 +87,20 @@ const ProductDescription = (props) => {
                                 <CardBody>
                                     <div className="additional-info">
                                         <h3>{heading}</h3>
+                                        {console.log("---heading---",heading)}
                                         <table>
                                             <tbody>
                                                 <tr>
                                                     <td>Make</td>
-                                                    <td>{console.log(categoryData.category_details.condition)}</td>
+                                                    <td>{categoryData && categoryData.category_details &&categoryData.category_details.make}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Model</td>
-                                                    <td>Commodore</td>
+                                                    <td>{ categoryData && categoryData.category_details && categoryData.category_details.model}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Year</td>
-                                                    <td>2003</td>
+                                                    <td>{categoryData && categoryData.category_details &&categoryData.category_details.year}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
