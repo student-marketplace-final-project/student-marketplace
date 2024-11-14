@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import "./product.css"
@@ -25,10 +25,10 @@ const Vehical = (props) => {
     description: '',
     price: '',
     phone_number: '',
-    image: '',
+    image: ''
 
   });
-console.log("-----?>",props)  
+
   // Yup validation schema
   const validationSchema = Yup.object({
     make: Yup.string().required(ERROR_CONST.VEHICAL_MAKE),

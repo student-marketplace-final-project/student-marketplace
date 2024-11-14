@@ -4,8 +4,9 @@ import { Card, CardBody, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import "./product.css"
+import HeaderFile from '../../../components/Custom/header';
 
-const CategoryModal = () => {
+const CategoryModal = (props) => {
   // Categories data
   const categories = [
     { name: 'Vehicles', icon: 'ri-car-line', path: '/vehical' },
@@ -17,6 +18,7 @@ const CategoryModal = () => {
 
   return (
     <div className="category-modal-container">
+      <HeaderFile props={props}/>
       <Row className='justify-content-center'>
         <Col md={6}>
           <h2 className="category-title">Categories</h2>

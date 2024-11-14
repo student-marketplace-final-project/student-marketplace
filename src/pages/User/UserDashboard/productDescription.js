@@ -7,7 +7,6 @@ import uonlogo from "../../../assets/images/uon-logo-square.png";
 import HeaderFile from '../../../components/Custom/header';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-
 const ProductDescription = (props) => {
     const images = [
         uonlogo, uonlogo, uonlogo, uonlogo
@@ -15,8 +14,6 @@ const ProductDescription = (props) => {
     ];
    
 const ad_id="";
- 
- 
     useEffect=(()=>{
         const id = props.location.pathname;
         ad_id = id.split("/productDescription//")[1];
@@ -63,6 +60,7 @@ const ad_id="";
                             <Card>
                                 <CardBody>
                                     <h3>Seller Information</h3>
+                                    
                                     
                                     <h4>Dhara Bhadani</h4>
                                     <h3>Contact Information: <span>0987654322</span></h3>
