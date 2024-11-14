@@ -58,6 +58,7 @@ class Registration extends Component {
         address:"",
         password: "",
         confirmpassword: "",
+        isStudent:true
       },
       hiddenPassword: true,
       isPasswordInvisibleIcon: false,
@@ -91,50 +92,37 @@ class Registration extends Component {
       phone_number:values.contact,
       address:values.address,
       password: values.password,
+      is_student:true
     };
     authRegister(body)
       .then((response) => {
         console.log("register response--->>>",response);
-        localStorage.setItem(Storage.USER_EMAIL, values.email);
-       // this.props.history.push("/activation");
+       localStorage.setItem(Storage.USER_EMAIL, values.email);
         NotificationManager.success(
           "You have successfully registered",
           "",
           201
         );
+        this.props.history.push('/login');
+
       })
       .catch((err) => {
+        console.log("---->error", err.data.message)
         const errorData =
-          err && err.data && err.data.error && err.data.error.message;
-        if (errorData === "err_20") {
-          NotificationManager.error("Invalid Service Email", "", 700);
-        } else if (errorData === "err_10") {
+          err && err.data && err.data.message;
+        if (errorData === "User already exists") {
           NotificationManager.error(
             "This email is already registered",
             "",
-            700
+            400
           );
-        } else if (errorData === "err_7") {
-          NotificationManager.error("Invalid email address", "", 700);
-        } else if (errorData === "err_8") {
+        } else if (errorData === "Server error") {
           NotificationManager.error(
-            "Password must be at least 8 characters in length",
+            "Server Error",
             "",
-            700
+            500
           );
-        } else if (errorData === "err_13") {
-          NotificationManager.error("Invalid email or password", "", 700);
-        } else if (errorData === "err_1") {
-          NotificationManager.error("First name is required", "", 700);
-        } else if (errorData === "err_9") {
-          NotificationManager.error("Passwords don't match", "", 700);
-        } else if (errorData === "err_500") {
-          NotificationManager.error(
-            "Internal server error. Please try again after sometime",
-            "",
-            700
-          );
-        }
+        } 
       });
   };
   render() {

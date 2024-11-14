@@ -1,4 +1,4 @@
-import React, { useState,useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import "./product.css"
@@ -6,53 +6,92 @@ import HeaderFile from '../../../components/Custom/header';
 import CustomInput from '../../../components/Custom/User/Textinput'
 import Button from '../../../components/Custom/Button';
 import { errorsConst as ERROR_CONST } from "../../../components/Constants/errors";
+import {
+  NotificationManager,
+  NotificationContainer,
+} from "react-notifications";
+import { postAdsData } from '../../../Services/dashboardServices';
+import { useLocation } from 'react-router-dom';
 
-
-const Vehical = () => {
+const Vehical = (props) => {
   const formRef = useRef(null);
+  const location = useLocation();
+  const [imageBase64, setImageBase64] = useState('');
   const [initialValues, setInitialValues] = useState({
     make: '',
     model: '',
     year: '',
-    variant: '',
     title: '',
-    odometer: '',
-    vin: '',
-    registrationNumber: '',
-    registrationState: '',
-    registrationExpiry: '',
-    color: '',
     description: '',
     price: '',
-    contactName: '',
-    location: '',
-    phoneNumber: ''
+    phone_number: '',
+    image: '',
+
   });
+console.log("-----?>",props)  
   // Yup validation schema
   const validationSchema = Yup.object({
     make: Yup.string().required(ERROR_CONST.VEHICAL_MAKE),
     model: Yup.string().required(ERROR_CONST.VEHICAL_MODEL),
-    year: Yup.string().required(ERROR_CONST.VEHICAL_YEAR),
-    varient: Yup.string().required(ERROR_CONST.VEHICAL_VARIENT),
+    year: Yup.number().required(ERROR_CONST.VEHICAL_YEAR),
     title: Yup.string().required(ERROR_CONST.TITLE),
-    odometer: Yup.string().required(ERROR_CONST.ODOMETER),
-    vin: Yup.string().required(ERROR_CONST.VIN),
-    registrationNumber: Yup.string().required(ERROR_CONST.REGISTRATION_NUMBER),
-    registrationExpiry: Yup.string().required(ERROR_CONST.REGISTRATION_EXPIRY),
-    registrationState: Yup.string().required(ERROR_CONST.REGISTRATION_STATE),
     description: Yup.string().required(ERROR_CONST.DESCRIPTION),
-    price: Yup.string().required(ERROR_CONST.PRICE)
+    price: Yup.number().required(ERROR_CONST.PRICE),
+    phone_number: Yup.number().required(ERROR_CONST.PHONE_NUMBER),
+
   });
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // Get the uploaded file
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageBase64(reader.result); // Save Base64 string to state
+      };
+      reader.readAsDataURL(file); // Convert image to Base64
+    }
+  };
+
+
 
   // Handle form submission
   const handleSubmit = (values) => {
-    console.log("Form Data Submitted:", values);
-    // Navigate to home page after submission
+   
+    const data = {
+      category_type: "Vehicles",
+      categoryData: {
+        make: values.make,
+        model: values.model,
+        year: values.year
+      },
+      adData: {
+        title: values.title,
+        description: values.description,
+        price: values.price,
+        image: imageBase64,
+        phone_number: values.phone_number,
+        location_lat: 35.712776,
+        location_lon: -74.005974
+      }
+    }
+
+
+    postAdsData(data)
+      .then((response) => {
+        props.history.push("/dashboard")
+      })
+      .catch((error) => {
+        const errData =
+          error && error.data && error.data.message;
+        if (errData === "Invalid email or password") {
+          NotificationManager.error("Invalid email or password", "", 400);
+        }
+      });
+
   };
 
   return (
     <React.Fragment>
-      <HeaderFile />
+      <HeaderFile props={props}/>
       <div className=" page-content container-fluid">
         <div className="row vh-100 align-items-center justify-content-center">
           <div className="col-md-12 col-lg-4 bg-white rounded">
@@ -62,9 +101,8 @@ const Vehical = () => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
-                innerRef={formRef}
               >
-                {({ values, errors, touched,handleChange }) => (
+                {({ values, errors, touched, handleChange }) => (
                   <Form>
                     <div>
                       <label className="Top-label">Make*</label>
@@ -91,7 +129,7 @@ const Vehical = () => {
                     />
                     <label className="Top-label">Year*</label>
                     <CustomInput
-                      type='text'
+                      type='number'
                       name='year'
                       values={values}
                       errors={errors}
@@ -99,16 +137,7 @@ const Vehical = () => {
                       handleChange={handleChange}
                       placeholder={'Enter model year'}
                     />
-                    <label className="Top-label">Variant*</label>
-                    <CustomInput
-                      type='text'
-                      name='Variant'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Variant'}
-                    />
+
                     <h2 className='heading'>Car Details</h2>
                     <label className="Top-label">Title*</label>
                     <CustomInput
@@ -120,76 +149,13 @@ const Vehical = () => {
                       handleChange={handleChange}
                       placeholder={'Enter title'}
                     />
-                    <label className="Top-label">Odometer*</label>
-                    <CustomInput
-                      type='text'
-                      name='odometer'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter odometer'}
-                    />
-                    <label className="Top-label">VIN*</label>
-                    <CustomInput
-                      type='text'
-                      name='vin'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter VIN number'}
-                    />
-                    <label className="Top-label">Is your car registered?*</label>
-                    <CustomInput
-                      type='text'
-                      name='Variant'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Variant'}
-                    />
-                    <label className="Top-label">Registration Number*</label>
-                    <CustomInput
-                      type='text'
-                      name='registration-number'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Registration Number'}
-                    />
-                    <label className="Top-label">Registration State*</label>
-                    <CustomInput
-                      type='text'
-                      name='registration-state'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Registration State'}
-                    />
-                    <label className="Top-label">Registration Expiry*</label>
-                    <CustomInput
-                      type='text'
-                      name='registration-expiry'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Registration Expiry Date'}
-                    />
-                    <label className="Top-label">Photo*</label>
-                    <CustomInput
-                      type='upload'
-                      name='photo'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter Picture'}
-                    />
+                    <label className="Top-label">Upload pictures here*</label>
+                    <input type="file" name="image" accept="image/*" onChange={handleImageUpload} style={{ margin: "10px" }} /><br />
+                    {!imageBase64 ? (
+                      <div style={{ color: "red", marginLeft: "10px" }}>Please select an image</div>
+                    ) : null}
+                    {imageBase64 && <img src={imageBase64} alt="Preview" style={{ maxWidth: '200px', margin: "10px" }} />}<br />
+
                     <label className="Top-label">Description*</label>
                     <CustomInput
                       type='text'
@@ -203,33 +169,44 @@ const Vehical = () => {
                     <label className="Top-label">Price*</label>
                     <CustomInput
                       type='text'
-                      name='Price'
+                      name='price'
                       values={values}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
                       placeholder={'Enter Your Price'}
                     />
+                    <label className="Top-label">Contact Number*</label>
+                    <CustomInput
+                      type='text'
+                      name='phone_number'
+                      values={values}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange}
+                      placeholder={'Enter Phone Number'}
+                    />
+
                     <div className="text-center">
                       <Button
                         type="submit"
                         name="btn"
                         className="custom-btn"
-                        onSubmit ={(values) => handleSubmit(values)}
-                      
+                        onSubmit={(values) => handleSubmit(values)}
+
                       >
                         Post
                       </Button>
-                    </div>
 
+                    </div>
                   </Form>
                 )}
               </Formik>
-
             </div>
           </div>
         </div>
       </div>
+      <NotificationContainer />
     </React.Fragment>
   );
 };

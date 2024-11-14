@@ -15,7 +15,7 @@ import UserDashboard from "../pages/User/UserDashboard/index"
 // Dashboard
 import Modal from "../pages/User/AddProduct/model"
 import Product from "../pages/User/AddProduct/index"
-import AddForm from "../pages/User/AddProduct/vehical"
+import Vehical from "../pages/User/AddProduct/vehical"
 import Accommodation from "../pages/User/AddProduct/accomodation";
 import Electronics from "../pages/User/AddProduct/electronics";
 import Profile from "../pages/User/AddProduct/userprofile";
@@ -26,36 +26,63 @@ import Error404 from "../pages/Utility/Error404";
 import Error500 from "../pages/Utility/Error500";
 
 import ResendVerification from "../pages/AuthenticationFlow/Login/resendVerificationMail";
+import Furniture from "../pages/User/AddProduct/furniture";
+import Services from "../pages/User/AddProduct/services";
 
 
 const authProtectedRoutes = [
+
+
+
+
   // this route should be at the end of all other routes
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/usage" />,
+    component: () => <Redirect to="/dashboard" />,
   },
 ];
 
 const publicRoutes = [
   { path: "/loader", component: Loader },
   { path: "/activation", component: Activation },
+
+  //authentication routes
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/auth/reset-password", component: Resetpwd },
   { path: "/verification", component: ResendVerification },
-
-
-  { path: "/usage", component: UserDashboard },
+  //user dashboard
+  { path: "/dashboard", component: UserDashboard },
+  //product base page
   { path: "/product", component: Product },
+
+  //categorical modeal page
   { path: "/modal", component: Modal },
-  { path: "/addform", component: AddForm },
+
+  //post vehical ads
+  { path: "/vehical", component: Vehical },
+
+  //post accomodation ads
   { path: "/accommodation", component: Accommodation },
+
+  //post electronics ads
   { path: "/electronics", component: Electronics },
+
+  //post furniture ads
+  { path: "/furniture", component: Furniture },
+
+  //post furniture ads
+  { path: "/services", component: Services },
+
+  //user profile page
   { path: "/profile", component: Profile },
+
+  //product description page
   { path: "/productDescription", component: ProductDescription },
 
+  //error pages
   { path: "/pages-404", component: Error404 },
   { path: "/pages-500", component: Error500 },
 ];

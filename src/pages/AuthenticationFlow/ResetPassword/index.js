@@ -48,18 +48,16 @@ class Login extends Component {
   };
 
   handleSubmit = (values) => {
-    console.log("reserpassword value",values);
+  
 
-    const token = this.props.location.search;
-    const newToken = token.split("?token=")[1];
-
-    const body = {
-      token: newToken,
-      newPassword: values.password,
-      confirmPassword: values.confirmPassword,
+    const token = this.props.location.pathname;
+    const newToken = token.split("/auth/reset-password/")[1];
+   const body = {
+      newPassword: values.password
     };
-    authReset(body)
-      .then(() => {
+    authReset(newToken,body)
+      .then((response) => {
+        console.log("---successfull",response)
         this.props.history.push("/login");
       })
       .catch(() => {});
@@ -115,7 +113,7 @@ class Login extends Component {
                           className="custom-btn"
                           onSubmit={(values) => this.handleSubmit(values)}
                         >
-                          Login
+                          Reset
                         </Button>
                       </div>
                     </Form>

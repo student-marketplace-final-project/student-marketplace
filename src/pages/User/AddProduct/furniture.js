@@ -13,10 +13,10 @@ import {
 } from "react-notifications";
 import { postAdsData } from '../../../Services/dashboardServices';
 
-const Electronics = (props) => {
-  console.log("===props====", props)
+const Furniture = (props) => {
+
   const [initialValues, setInitialValues] = useState({
-    title: '', type: '', description: '', brand: '', model: '', condition: '', price: '', image: '', phone_number: ''
+    title: '', type: '', description: '', material: '', model: '', condition: '', price: '', image: '', phone_number: ''
   });
   const [imageBase64, setImageBase64] = useState('');
 
@@ -38,22 +38,14 @@ const Electronics = (props) => {
     price: Yup.string().required(ERROR_CONST.PRICE),
     condition: Yup.string().required(ERROR_CONST.TITLE),
     description: Yup.string().required(ERROR_CONST.DESCRIPTION),
-    brand: Yup.string().required(ERROR_CONST.BRAND),
-    model: Yup.string().required(ERROR_CONST.MODEL),
-    phone_number: Yup.string().required(ERROR_CONST.PHONE_NUMBER),
-
-
-
-
   });
   // Handle form submission
   const handleSubmit = (values) => {
     console.log("Form Data Submitted:", values);
     const data = {
-      category_type: "Electronics",
+      category_type: "Furniture",
       categoryData: {
-        brand: values.brand,
-        model: values.model,
+        material: values.material,
         "`condition`": values.condition,
         type: values.type
       },
@@ -68,10 +60,10 @@ const Electronics = (props) => {
       }
     }
 
-
+   
     postAdsData(data)
       .then((response) => {
-
+     
         props.history.push('/dashboard');
       })
       .catch((error) => {
@@ -94,7 +86,7 @@ const Electronics = (props) => {
           <div className="col-md-12 col-lg-4 bg-white rounded">
             <div className="innerContent">
 
-              <h2>Electronics</h2>
+              <h2>Furniture</h2>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -123,29 +115,19 @@ const Electronics = (props) => {
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
-
                       placeholder={'Enter type'}
                     />
-                    <label className="Top-label">Brand*</label>
+                    <label className="Top-label">Material*</label>
                     <CustomInput
                       type='text'
-                      name='brand'
+                      name='material'
                       values={values}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
-                      placeholder={'Enter Brand'}
+                      placeholder={'Enter material'}
                     />
-                    <label className="Top-label">Model*</label>
-                    <CustomInput
-                      type='text'
-                      name='model'
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange}
-                      placeholder={'Enter model'}
-                    />
+
                     <label className="Top-label">Condition*</label>
                     <CustomInput
                       type='text'
@@ -180,7 +162,7 @@ const Electronics = (props) => {
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
-                      placeholder={"Enter Description"}
+
                     />
                     <label className="Top-label">Contact Number*</label>
                     <CustomInput
@@ -216,4 +198,4 @@ const Electronics = (props) => {
   );
 };
 
-export default Electronics;
+export default Furniture;
