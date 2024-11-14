@@ -76,7 +76,6 @@ const archiveAd = (req, res) => {
     });
 };
 
-// Get details of a single ad based on its ID
 const getSingleAd = async (req, res) => {
     const adId = req.params.id;
 
@@ -84,13 +83,17 @@ const getSingleAd = async (req, res) => {
         const ad = await fetchAdById(adId);
 
         if (!ad) {
-            console.log("75");
-            return res.status(404).json({message: 'Ad not found'});
+            return res.status(404).json({ message: 'Ad not found' });
+        }
+
+        // Parse category_details JSON string into an object if it exists
+        if (ad.category_details) {
+            ad.category_details = JSON.parse(ad.category_details);
         }
 
         res.status(200).json(ad);
     } catch (error) {
-        res.status(500).json({message: 'Server error while retrieving ad details'});
+        res.status(500).json({ message: 'Server error while retrieving ad details' });
     }
 };
 
