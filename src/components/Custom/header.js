@@ -21,7 +21,7 @@ class HeaderFile extends Component {
         };
         this.deleteModal = this.deleteModal.bind(this);
         this.logoutModal = this.logoutModal.bind(this);
-    console.log("-----props---",props.props.history)
+    
       }
     
       toggleDropdown = () => {
@@ -64,7 +64,7 @@ class HeaderFile extends Component {
       };
     
       handleSubmit() {
-        console.log("---> this.props.props.history.push--", this.props.props.history.push)
+        
         this.props.props.history.push("/product");
       };
     render() {

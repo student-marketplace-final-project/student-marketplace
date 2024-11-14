@@ -57,9 +57,6 @@ const Accommodation = (props) => {
         phone_number:Yup.number().required(ERROR_CONST.PHONE_NUMBER)
 
     });
-
-
-
     // Function to handle the change in radio button selection
     const handleParkingChange = (event) => {
         setSelectedParking(event.target.value);
@@ -99,12 +96,8 @@ const Accommodation = (props) => {
                 location_lon: -74.005974
             }
         }
-
-      
-
         postAdsData(data)
             .then((response) => {
-              
                props.history.push('/dashboard');
             })
             .catch((error) => {

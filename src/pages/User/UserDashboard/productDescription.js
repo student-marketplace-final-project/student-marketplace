@@ -1,55 +1,70 @@
 // CarDetailsPage.js
-import React, { useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './productDescription.css';
 import uonlogo from "../../../assets/images/uon-logo-square.png";
 import HeaderFile from '../../../components/Custom/header';
 import { Card, CardBody, CardHeader } from 'reactstrap';
+import { getSpecificAd } from '../../../Services/dashboardServices';
 
 const ProductDescription = (props) => {
-    const images = [
-        uonlogo, uonlogo, uonlogo, uonlogo
-        // Add all image URLs here
-    ];
-   
-const ad_id="";
-    useEffect=(()=>{
-        const id = props.location.pathname;
-        ad_id = id.split("/productDescription//")[1];
-        
-    },[]);
-    console.log("---> product page",props.location.pathname)
-    console.log("---ad id--",ad_id);
+  
+    const [heading, setHeading] = useState('');
+    const [categoryData, setCategoryData] = useState({});
 
+    useEffect(() => {
+      switch (props.location.state.listing.category_type) {
+        case "Vehicals":
+            setHeading("Vehicle Details");
+            break;
+        case "Accommodation":
+            setHeading("Accomodation Details");
+            break;
+        case "Services":
+            setHeading("Services Details");
+            break;
+        case "Electronics":
+            setHeading("Electronics Details");
+            break;
+        case "Furniture":
+            setHeading("Furniture Details");
+            break;
+        default:
+            //setHeading("");
+    }
+    getSpecificAd(props.location.state.listing.ad_id)
+    .then((response)=>{
+        const data=response.data;
+        setCategoryData(data)
+        console.log("---",data.category_details)
+    }).catch(()=>{})
+      }, []);
+
+    
+    console.log("----state---", categoryData)
     return (
         <React.Fragment>
-            <HeaderFile props={props}/>
+            <HeaderFile props={props} />
             <div className='page-content'>
                 <div className='details-page'>
                     <div className='image-profile'>
                         <div className='carousel col-md-6 col-lg-6'>
-                            <Carousel showThumbs={true} >
-                                {images.map((image, index) => (
-                                    <div key={index}>
-                                        <img src={image} alt={`Car image ${index + 1}`} />
-                                    </div>
-                                ))}
-                            </Carousel>
+                            <div>
+                                <img src={props.location.state.listing.image} alt="product image" className=" mx-auto d-block product-img" />
+                            </div>
                             <div>
                                 <Card>
                                     <CardHeader>
-                                        <h2>2003 Holden Commodore SS 4 SP Automatic 4D Sedan</h2>
+                                        <h2>{props.location.state.listing.title}</h2>
                                     </CardHeader>
                                     <CardBody>
-                                        <p className="price">$20,000 <span className="negotiable">Negotiable</span></p>
+                                        <p className="price">{props.location.state.listing.price} <span className="negotiable">Negotiable</span></p>
                                         <p className="location">Oatley, NSW</p>
                                         <div className="description">
                                             <h3>Seller's Description</h3>
                                             <p>
-                                                Very regretful sale. Open to offers but in no rush to sell, so please no silly offers.
-                                                Any questions please reach out! For sale is my unmolested 2003 Holden Commodore VY SS Series 1...
-                                                {/* Add more description text here */}
+                                                {props.location.state.listing.description}
                                             </p>
                                         </div>
                                     </CardBody>
@@ -59,26 +74,24 @@ const ad_id="";
                         <div className=' col-md-6 col-lg-6'>
                             <Card>
                                 <CardBody>
-                                    <h3>Seller Information</h3>
-                                    
-                                    
-                                    <h4>Dhara Bhadani</h4>
-                                    <h3>Contact Information: <span>0987654322</span></h3>
+                                    <h2>Seller Information</h2>
+                                    <h4 style={{ color: "#007db7" }}> Name: </h4> 
+                                    <h5> {props.location.state.userDetail.name} </h5><br/>
+                                    <h4 style={{ color: "#007db7" }}>Email: </h4>
+                                    <h5>{props.location.state.userDetail.email}</h5><br/>
+                                    <h4 style={{ color: "#007db7" }}>Contact Information:</h4>
+                                    <h5>{props.location.state.userDetail.phone_number}</h5>
                                 </CardBody>
                             </Card>
                             <Card>
                                 <CardBody>
                                     <div className="additional-info">
-                                        <h3>Car Details</h3>
+                                        <h3>{heading}</h3>
                                         <table>
                                             <tbody>
                                                 <tr>
-                                                    <td>Date Listed</td>
-                                                    <td>21/10/2024</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Seller Type</td>
-                                                    <td>Private Seller</td>
+                                                    <td>Make</td>
+                                                    <td>{console.log(categoryData.category_details.condition)}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Model</td>
@@ -88,7 +101,6 @@ const ad_id="";
                                                     <td>Year</td>
                                                     <td>2003</td>
                                                 </tr>
-
                                             </tbody>
                                         </table>
                                     </div>

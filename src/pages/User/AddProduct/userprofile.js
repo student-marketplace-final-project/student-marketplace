@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Label, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button, CardFooter } from 'reactstrap';
 import './profile.css';
-import * as Yup from "yup";
-
 import { Formik, Form } from "formik";
-import uonlogo from "../../../assets/images/uon-logo-square.png";
 import HeaderFile from '../../../components/Custom/header';
-import CustomButton from '../../../components/Custom/Button';
+import SweetAlert from "react-bootstrap-sweetalert";
 import CustomInput from "../../../components/Custom/Auth/textinput"
 import { placeholderConst as PLACEHOLDER_CONST } from '../../../components/Constants/placeholder';
-import { getProfileData, updateProfile } from '../../../Services/dashboardServices';
+import { archiveUserAds, getProfileData, getUserAdsDetails, updateProfile } from '../../../Services/dashboardServices';
 import {
     NotificationManager,
     NotificationContainer,
 } from "react-notifications";
+import Spinner from "../../../components/Custom/customLoader"
 
 const UserProfile = (props) => {
- 
+
     const [listings, setListings] = useState([]);
+    const [adId, setAdId] = useState('');
+    const [deleteModal, setDeleteModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
     const [initialValues, setInitialValues] = useState({
         name: "",
         email: "",
@@ -26,22 +27,22 @@ const UserProfile = (props) => {
         contact: "",
         password: "",
     });
-
+   const startLoading = () => {
+    setIsLoading(true)
+      }
+    const  stopLoading = () => {
+        setIsLoading(false)
+      }
     const toggleEditModal = () => setEditModal(!editModal);
+    const toggleDeleteModal = (data) => {
 
-
+        setAdId(data)
+        setDeleteModal(!deleteModal);
+    }
 
     // Example data, replace with API data 
     useEffect(() => {
-        setListings([
-            { id: 1, title: '2003 HOLDEN COMMODORE SS', location: 'Oatley, NSW', price: '$20,000', image: uonlogo },
-            { id: 2, title: 'Jadore Paige Dress', location: 'Rockdale, NSW', price: '$150', image: uonlogo },
-            { id: 3, title: 'Bianca and Bridgett Dress', location: 'Rockdale, NSW', price: '$30', image: uonlogo },
-            { id: 4, title: 'ZU SHOES', location: 'Rockdale, NSW', price: '$5', image: uonlogo },
-            { id: 5, title: 'ZU SHOES', location: 'Rockdale, NSW', price: '$5', image: uonlogo },
-            { id: 6, title: 'ZU SHOES', location: 'Rockdale, NSW', price: '$5', image: uonlogo },
-        ]);
-
+        startLoading()
         getProfileData().then((response) => {
             console.log("-----> get all ads data", response.data)
             const data = response.data;
@@ -51,22 +52,29 @@ const UserProfile = (props) => {
                 address: data.address,
                 contact: data.phone_number,
             })
-
+            stopLoading()
         })
-            .catch((err) => { });
+            .catch((err) => {stopLoading() });
+
+        getUserAdsDetails().then((response) => {
+            const data = response.data;
+            setListings(data)
+            stopLoading()
+        })
+            .catch((err) => { stopLoading()});
     }, []);
 
 
 
     const handleSubmit = (values, { setFieldError, resetForm }) => {
         console.log("profile handle submit===", values)
-        const data ={
-                name: values.name, 
-                address: values.address, 
-                phone_number: values.contact, 
-                email: values.email, 
-                is_student: true ,
-                password:values.password
+        const data = {
+            name: values.name,
+            address: values.address,
+            phone_number: values.contact,
+            email: values.email,
+            is_student: true,
+            password: values.password
         }
 
         updateProfile(data).then((response) => {
@@ -98,9 +106,25 @@ const UserProfile = (props) => {
             });
     }
 
+    const deleteUserAds = () => {
+
+        archiveUserAds(adId).then((response) => {
+            NotificationManager.success("Ad archived successfully", "", 500);
+            startLoading()
+            getUserAdsDetails().then((response) => {
+                const data = response.data;
+                setListings(data)
+            })
+            stopLoading()
+                .catch((err) => {stopLoading() });
+        })
+            .catch((err) => { stopLoading()});
+        setDeleteModal(false)
+    }
+
     return (
         <React.Fragment>
-            <HeaderFile props={props}/>
+            <HeaderFile props={props} />
             <div className='page-content'>
                 <Row>
                     <Col xs="4" >
@@ -225,7 +249,6 @@ const UserProfile = (props) => {
                                                 )}
                                             </Formik>
                                         </div>
-
                                     </ModalBody>
                                     <ModalFooter>
                                         <Button
@@ -243,23 +266,39 @@ const UserProfile = (props) => {
                     </Col>
                     <Col xs="8" className='col2'>
                         <Card className='list-card'>
+                          { isLoading && <Spinner/>}
                             <CardBody>
-
                                 <div className="listings">
                                     {listings.map(listing => (
                                         <div key={listing.id} className="listing-card">
                                             <img src={listing.image} alt={listing.title} />
                                             <div className="listing-info">
-                                                <p className="price">{listing.price}</p>
+                                                <p className="price"> ${listing.price}</p>
                                                 <p className="title">{listing.title}</p>
                                                 <p className="location">{listing.location}</p>
                                             </div>
-                                            <button className="favorite-button">♡</button>
+                                            <button className="favorite-button" onClick={() => toggleDeleteModal(listing.ad_id)}>Delete</button>
                                         </div>
                                     ))}
                                 </div>
                             </CardBody>
                         </Card>
+                        <SweetAlert
+                            btnSize="lg"
+                            show={deleteModal}
+                            showCancel
+                            title={
+                                <span style={{ fontSize: 20 }} className="text-center">
+                                    Delete Ads
+                                </span>
+                            }
+                            onConfirm={deleteUserAds}
+                            onCancel={() => {
+                                setDeleteModal(false);
+                            }}
+                        >
+                            Are you sure you want to delete this Advertisement?
+                        </SweetAlert>
                     </Col>
                 </Row>
             </div>

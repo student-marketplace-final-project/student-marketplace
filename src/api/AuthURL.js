@@ -13,6 +13,9 @@ export const GET_ALL_ADS = "marketplace/ads";
 export const GET_PROFILE_DATA ="user/profile";
 export const UPDATE_PROFILE = "user/profile";
 export const POST_VEHICAL_DATA ="marketplace/ads"
-export const ARCHIVE_USER ="user/archive-own"
+export const ARCHIVE_USER ="user/archive-own";
+export const GET_SPECIFIC_AD ="marketplace/ads/";
+export const GET_USER_ADS_DETAILS="marketplace/ads/user";
+export const ARCHIVE_USER_AD ="marketplace/ads/archive/"
 
 export const URL = DevURL;
