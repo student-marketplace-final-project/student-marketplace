@@ -1,12 +1,12 @@
 import React from "react";
 import AdminDashboard from "../../../components/Admin/AdminDashboard";
 import Dashboard from "./index";
-const UserDashboard = () => {
-  const Role = localStorage.getItem("role");
+const UserDashboard = (props) => {
+  const Role = localStorage.getItem("role",props);
   return (
     <>
       {Role === "admin" && <AdminDashboard />}
-      {Role === "user" && <Dashboard />}
+      {Role === "user" && <Dashboard props={props}/>}
     </>
   );
 };

@@ -14,7 +14,8 @@ import {
 import { postAdsData } from '../../../Services/dashboardServices';
 
 const Electronics = (props) => {
-  console.log("===props====", props)
+  console.log("---props--4-",props)
+
   const [initialValues, setInitialValues] = useState({
     title: '', type: '', description: '', brand: '', model: '', condition: '', price: '', image: '', phone_number: ''
   });
@@ -41,10 +42,6 @@ const Electronics = (props) => {
     brand: Yup.string().required(ERROR_CONST.BRAND),
     model: Yup.string().required(ERROR_CONST.MODEL),
     phone_number: Yup.string().required(ERROR_CONST.PHONE_NUMBER),
-
-
-
-
   });
   // Handle form submission
   const handleSubmit = (values) => {
@@ -68,10 +65,8 @@ const Electronics = (props) => {
       }
     }
 
-
     postAdsData(data)
       .then((response) => {
-
         props.history.push('/dashboard');
       })
       .catch((error) => {
@@ -82,7 +77,7 @@ const Electronics = (props) => {
           NotificationManager.error("Invalid email or password", "", 400);
         }
       });
-    // Navigate to home page after submission
+   
   };
 
 
@@ -202,11 +197,9 @@ const Electronics = (props) => {
                         Post
                       </Button>
                     </div>
-
                   </Form>
                 )}
               </Formik>
-
             </div>
           </div>
         </div>

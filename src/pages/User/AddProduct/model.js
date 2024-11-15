@@ -7,6 +7,8 @@ import "./product.css"
 import HeaderFile from '../../../components/Custom/header';
 
 const CategoryModal = (props) => {
+  console.log("---props--1-",props.props)
+
   // Categories data
   const categories = [
     { name: 'Vehicles', icon: 'ri-car-line', path: '/vehical' },
@@ -18,7 +20,7 @@ const CategoryModal = (props) => {
 
   return (
     <div className="category-modal-container">
-      <HeaderFile props={props}/>
+      <HeaderFile props={props.props}/>
       <Row className='justify-content-center'>
         <Col md={6}>
           <h2 className="category-title">Categories</h2>

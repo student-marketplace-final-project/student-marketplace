@@ -14,7 +14,7 @@ import {
 import { postAdsData } from '../../../Services/dashboardServices';
 
 const Furniture = (props) => {
-
+  console.log("---props---5--",props)
   const [initialValues, setInitialValues] = useState({
     title: '', type: '', description: '', material: '', model: '', condition: '', price: '', image: '', phone_number: ''
   });
@@ -31,17 +31,19 @@ const Furniture = (props) => {
     }
   };
 
-
   const validationSchema = Yup.object({
     title: Yup.string().required(ERROR_CONST.TITLE),
     type: Yup.string().required(ERROR_CONST.TYPE),
     price: Yup.string().required(ERROR_CONST.PRICE),
-    condition: Yup.string().required(ERROR_CONST.TITLE),
+    condition: Yup.string().required(ERROR_CONST.CONDITION),
     description: Yup.string().required(ERROR_CONST.DESCRIPTION),
-  });
+    material:Yup.string().required(ERROR_CONST.MATERIAL),
+    phone_number:Yup.string().required(ERROR_CONST.PHONE_NUMBER)
+  })
+
   // Handle form submission
   const handleSubmit = (values) => {
-    console.log("Form Data Submitted:", values);
+    
     const data = {
       category_type: "Furniture",
       categoryData: {
@@ -60,26 +62,24 @@ const Furniture = (props) => {
       }
     }
 
-   
     postAdsData(data)
       .then((response) => {
-     
         props.history.push('/dashboard');
       })
       .catch((error) => {
-        console.log("=====>error", error)
         const errData =
           error && error.data && error.data.message;
         if (errData === "Invalid email or password") {
           NotificationManager.error("Invalid email or password", "", 400);
         }
       });
-    // Navigate to home page after submission
+    
   };
-
+  
 
   return (
     <React.Fragment>
+      
       <HeaderFile props={props}/>
       <div className=" page-content container-fluid">
         <div className="row vh-100 align-items-center justify-content-center">

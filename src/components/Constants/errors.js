@@ -39,5 +39,6 @@ export const errorsConst = {
   FURNISHED:"Is your accomodation furnished?",
   PETS:"Is your place pets friendly?",
   BRAND:"Enter brand name",
-  MODEL:"Enter model name"
+  MODEL:"Enter model name",
+  MATERIAL:"Enter material name"
 };

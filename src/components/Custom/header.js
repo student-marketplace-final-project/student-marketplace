@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-   Button, Dropdown, DropdownMenu, DropdownItem, DropdownToggle,
+  Button, Dropdown, DropdownMenu, DropdownItem, DropdownToggle,
 } from "reactstrap";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { Link } from "react-router-dom"
@@ -11,70 +11,74 @@ import '../../pages/User/UserDashboard/features.css'
 import uonlogo from "../../assets/images/uon-logo-square.png";
 
 class HeaderFile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          isLoading: false,
-          isDropdownOpen: false,
-          deleteModal: false,
-          isLogoutModal:false
-        };
-        this.deleteModal = this.deleteModal.bind(this);
-        this.logoutModal = this.logoutModal.bind(this);
-    
-      }
-    
-      toggleDropdown = () => {
-        this.setState({ isDropdownOpen: true })
-      }
-      startLoading = () => {
-        this.setState({ isLoading: true });
-      }
-      stopLoading = () => {
-        this.setState({ isLoading: false });
-      }
-      deleteModal() {
-        this.setState((prevState) => ({
-          deleteModal: !prevState.deleteModal,
-        }));
-      }
-      logoutModal() {
-        this.setState((prevState) => ({
-          isLogoutModal: !prevState.isLogoutModal,
-        }));
-      }
-    
-      deleteAccount() {
-        archiveAccount().then(() => {
-          window.location.reload(true);
-          localStorage.setItem("A##KEY", "");
-          this.delete_modal(false);
-        })
-          .catch((err) => {
-    
-          });
-      }
-      logoutUser(){
-        localStorage.setItem("A##KEY", "");
-        window.location.reload(true);
-      }
-      componentDidMount = () => {
-        this.startLoading();
-        
-      };
-    
-      handleSubmit() {
-        
-        this.props.props.history.push("/product");
-      };
-    render() {
-        return (
-            <React.Fragment>
-                 <header id="page-topbar">
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      isDropdownOpen: false,
+      deleteModal: false,
+      isLogoutModal: false
+    };
+    this.deleteModal = this.deleteModal.bind(this);
+    this.logoutModal = this.logoutModal.bind(this);
+  }
+
+  toggleDropdown = () => {
+    this.setState({ isDropdownOpen: true })
+  }
+  startLoading = () => {
+    this.setState({ isLoading: true });
+  }
+  stopLoading = () => {
+    this.setState({ isLoading: false });
+  }
+  deleteModal() {
+    this.setState((prevState) => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  }
+  logoutModal() {
+    this.setState((prevState) => ({
+      isLogoutModal: !prevState.isLogoutModal,
+    }));
+  }
+
+  deleteAccount() {
+    archiveAccount().then(() => {
+      window.location.reload(true);
+      localStorage.setItem("A##KEY", "");
+      this.delete_modal(false);
+    })
+      .catch((err) => {
+
+      });
+  }
+  logoutUser() {
+    localStorage.setItem("A##KEY", "");
+    window.location.reload(true);
+  }
+  componentDidMount = () => {
+    this.startLoading();
+
+  };
+
+  handleSubmit() {
+    console.log("---", this.props.props.history)
+    this.props.props.history.push("/product");
+  };
+  render() {
+    console.log("------history.push----", this.props)
+    const stateData = this.props.props;
+    return (
+      <React.Fragment>
+        <header id="page-topbar">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: "#007db7" }}  >
             <div className="d-flex">
               <div className="navbar-brand-box">
-                <Link to="/dashboard" className="logo logo-dark">
+                <Link to={{
+                  pathname: "/dashboard",
+                  state: { data:stateData }
+                }} className="logo logo-dark">
                   <span className="logo-lg">
                     <img src={uonlogo} alt="UON MARKETPLACE" height="100" />
                   </span>
@@ -129,7 +133,7 @@ class HeaderFile extends Component {
                 showCancel
                 title={
                   <span style={{ fontSize: 20 }} className="text-center">
-                   Logout
+                    Logout
                   </span>
                 }
                 onConfirm={this.logoutUser}
@@ -137,13 +141,13 @@ class HeaderFile extends Component {
                   this.logoutModal(false);
                 }}
               >
-               Are you sure you want to logout?
+                Are you sure you want to logout?
               </SweetAlert>
             </div>
           </div>
         </header>
-            </React.Fragment>
-        )
-    }
+      </React.Fragment>
+    )
+  }
 }
 export default HeaderFile;

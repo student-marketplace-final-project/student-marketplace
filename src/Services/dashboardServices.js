@@ -2,10 +2,10 @@ import api from "../api/Api";
 import * as url from "../api/AuthURL";
 
 // dashboard get all ads
-export const getAllAds = (data) => {
+export const getAllAds = (pageLimit,data) => {
   return new Promise(async (resolve, reject) => {
     return api
-      .getWithToken(url.GET_ALL_ADS, data)
+      .getWithToken(url.GET_ALL_ADS+pageLimit, data)
       .then((response) => {
         if (response) {
           resolve(response);

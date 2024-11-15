@@ -13,6 +13,7 @@ import {
 } from "react-notifications";
 
 const Accommodation = (props) => {
+    console.log("---props-3--",props)
 
     // State to hold the selected option
     const [selectedParking, setSelectedParking] = useState("parking_yes");
