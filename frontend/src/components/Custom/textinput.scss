@@ -1,0 +1,15 @@
+.has-wrapper {
+  position: relative;
+  .has-input {
+    border: none;
+  }
+  .has-icon {
+    position: absolute;
+    color: black;
+    right: -0px;
+    margin-right: 5px;
+    top: 4px;
+    font-size: 20px;
+  }
+}
+

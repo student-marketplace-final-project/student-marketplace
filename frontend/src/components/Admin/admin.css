@@ -1,0 +1,48 @@
+.ad-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.ad-table th, .ad-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #070707;
+}
+
+.ad-table th {
+    background-color: #007db7;
+    color: #f1f1f1;
+}
+
+.ad-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .ad-table thead {
+        display: none;
+    }
+
+    .ad-table tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .ad-table td {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .ad-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+}

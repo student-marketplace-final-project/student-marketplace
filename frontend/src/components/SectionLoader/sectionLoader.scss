@@ -1,0 +1,20 @@
+.back {
+    filter: blur(8px);
+  }
+  .loader {
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 99;
+    align-items: center;
+    margin: 0 auto;
+    right: 0;
+    //   width: 100vw;
+    height: 100vh;
+    background: rgba(221, 216, 216, 0.9);
+    color: #404040;
+    //   filter: blur(8px);
+  }
